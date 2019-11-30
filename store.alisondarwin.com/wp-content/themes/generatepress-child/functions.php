@@ -129,15 +129,10 @@ if (is_amp()) {
 		
 		foreach ( $product->get_available_variations() as $variation ) { // Loop through all available variations
 			
-			/*$variation_id = $variation['variation_id']; // Get variation ID
-			$variation_obj = new WC_Product_variation( $variation_id ); // Create new Product Variation Object with variation ID
-			$variation_attributes = implode( $variation_obj->get_variation_attributes() ); // Get variation name from Object
-			*/
-			$variation_attributes = implode ($variation['attributes'] );
+			$variation_attributes = implode ($variation['attributes'] ); // Get all attributes for variations
 
-			$variations_are_in_stock[$variation_attributes] = $variation['is_in_stock']; // $variation['is_in_stock'] return boolean
+			$variations_are_in_stock[$variation_attributes] = $variation['is_in_stock']; // Array of bools specifying if a variations has stock or not.
 			
-
 		}
 
 		return json_encode( $variations_are_in_stock ); // Returns an array with variations availabililty encoded in JSON format 
