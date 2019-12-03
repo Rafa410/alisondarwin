@@ -222,7 +222,7 @@ Template: generatepress
     background-color: #4d4d4d;
 }
 
-.woocommerce-products-header__title, .woocommerce div.product .product_title, .woocommerce h2 {
+.woocommerce-products-header__title, .woocommerce div.product .product_title, .woocommerce h1, .woocommerce h2 {
     font-family: 'Special Elite', Georgia;
 }
 .woocommerce-products-header__title {
@@ -231,7 +231,7 @@ Template: generatepress
     color: #ff6a01;
 }
 
-.woocommerce ul.products li.product .woocommerce-loop-category__title, .woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce ul.products li.product h3 {
+.woocommerce ul.products li.product .woocommerce-loop-category__title, .woocommerce ul.products li.product h3 {
     margin: 2rem 0 0;
     font-size: 1.5em;
 }
