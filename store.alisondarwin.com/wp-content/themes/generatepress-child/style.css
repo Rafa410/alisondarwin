@@ -381,7 +381,7 @@ html[amp] .woocommerce-tabs .woocommerce-Tabs-panel.active {
     display: block;
 }
 
-html[amp] .i-amphtml-intrinsic-sizer {
+html[amp] .attachment-woocommerce_thumbnail > * > *, html[amp] .woocommerce-product-gallery__image .wp-post-image > * > * {
     width: 100%;
 }
 
