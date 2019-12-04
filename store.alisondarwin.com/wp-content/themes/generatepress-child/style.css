@@ -242,8 +242,48 @@ Template: generatepress
 }
 
 .woocommerce .woocommerce-breadcrumb {
-    margin: 1em 0;
+    margin: -1rem 0 1rem;
 }
+
+.posted_in {
+    display: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+    overflow: visible;
+}
+.woocommerce #content div.product .woocommerce-tabs ul.tabs::before {
+    display: none;
+}
+    .woocommerce div.product .woocommerce-tabs ul.tabs li {
+        background-color: #f7f7f7;
+        border: unset;
+        transition: all 0.3s 0.15s ease-in-out;
+    }
+        .woocommerce div.product .woocommerce-tabs ul.tabs li.active, .woocommerce div.product .woocommerce-tabs ul.tabs li:hover {
+            transition-delay: 0s;
+        }
+        .woocommerce div.product .woocommerce-tabs ul.tabs li.active {
+            box-shadow: 0 15px 15px -15px #ff6a01;
+        }
+        .woocommerce div.product .woocommerce-tabs ul.tabs li:hover:not(.active) {
+            box-shadow: 0 15px 15px -18px;
+        }
+        .woocommerce div.product .woocommerce-tabs ul.tabs li::before, .woocommerce div.product .woocommerce-tabs ul.tabs li::after {
+            display: none;
+        }
+
+.woocommerce .quantity .qty {
+    margin-left: 1rem;
+    border-radius: 10px;
+}
+
+.woocommerce.single-product #page.grid-container {
+    margin: 4rem auto 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 45px -15px rgba(0,0,0,0.3);
+}
+
 
 
 @media only screen AND (max-width: 400px) {
