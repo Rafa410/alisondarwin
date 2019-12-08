@@ -43,6 +43,10 @@ a {
         color: #ff6a01;
     }
 
+.one-container .site-content {
+    padding-top: 60px;
+}
+
 /** Contact form & subscription **/
 
 div.wpcf7, #mc_embed_signup {
@@ -239,7 +243,12 @@ address.mec-events-address {
 div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalcal-box input, div.mec-wrap .mec-totalcal-box select {
     font-family: 'Montserrat Regular', Helvetica, Arial, sans-serif;
 }
+:root:not(#_) h1 {
+    font-family: 'Special Elite', Georgia;
+}
+
     /* End Fonts*/
+
 /* End events */
 .elementor-social-icon.elementor-repeater-item-8293466 {
     background: #f09433;
@@ -249,6 +258,10 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
 
 .site-footer .site-info {
     padding: 0.25em;
+}
+
+.site-info .copyright a:hover {
+    color: #ff6a01;
 }
 
 .site-info .copyright-bar .copyright {
@@ -407,3 +420,4 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
 }
 
 /* End Mailchimp */
+

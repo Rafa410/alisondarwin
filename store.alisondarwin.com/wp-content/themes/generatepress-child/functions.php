@@ -1,4 +1,4 @@
-<?php
+<?php	/* store.alisondarwin.com */
 
 // Devuelve un booleano indicando si la página actual es AMP
 function is_amp() {
@@ -7,12 +7,6 @@ function is_amp() {
 
 // Cambios a hacer en páginas AMP
 if (is_amp()) {
-
-	/** Quita la pestaña 'sort by' **/
-	add_action( 'init', 'gpc_remove_tab_ordering_amp' );
-	function gpc_remove_tab_ordering_amp() {
-		remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 ); 
-	}
 	
 	/** Override del viewport en páginas AMP, para añadir 'minimum-scale=1' **/
 	add_action( 'wp_head', 'generate_add_viewport' );
@@ -150,6 +144,13 @@ if (is_amp()) {
 
 } // END is_amp()
 
+
+/** Quita la pestaña 'sort by' **/
+add_action( 'init', 'gpc_remove_tab_ordering_amp' );
+function gpc_remove_tab_ordering_amp() {
+	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 ); 
+}
+
 // Sobreescribe el script del plugin Multi Step Checkout
 add_action( 'wp_enqueue_scripts', 'gpc_override_multistep_checkout_script', 100 );
 function gpc_override_multistep_checkout_script() {
@@ -200,7 +201,7 @@ function gpc_generate_custom_footer() {
 				do_action( 'generate_before_copyright' );
 				?>
 				<div class="copyright-bar">
-					<span class="copyright">© <?php echo date('Y'); ?> Tienda Oficial alison DARWIN</span>
+					<span class="copyright">© <?php echo date('Y'); ?> <a href="https://store.alisondarwin.com">Tienda Oficial alison DARWIN</a></span>
 				</div>
 			</div>
 		</footer><!-- .site-info -->
