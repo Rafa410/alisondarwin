@@ -140,6 +140,10 @@ Template: generatepress
     text-transform: uppercase;
 }
 
+.wpmc-nav-wrapper {
+    justify-content: space-between;
+}
+
 .woocommerce-checkout .wpmc-nav-wrapper .wpmc-nav-buttons {
     width: 100%;
 }

@@ -86,7 +86,7 @@ div.wpcf7, #mc_embed_signup {
 }
 
 .wpcf7 p .wpcf7-submit, #mc_embed_signup #mc-embedded-subscribe-form input.button {
-    box-shadow: 2px 2px 8px 0 #555555;
+    box-shadow: 0 5px 15px -5px rgba(0,0,0,0.5);
     transition: all 0.6s;
 }
 
@@ -247,9 +247,16 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
     font-family: 'Special Elite', Georgia;
 }
 
-    /* End Fonts*/
+    /* End Fonts */
 
 /* End events */
+
+
+
+.logo-list svg {
+    vertical-align: middle;
+}
+
 .elementor-social-icon.elementor-repeater-item-8293466 {
     background: #f09433;
     background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
