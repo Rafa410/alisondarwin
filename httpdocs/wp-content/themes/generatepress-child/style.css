@@ -67,6 +67,7 @@ div.wpcf7, #mc_embed_signup {
         border: 0;
         border-bottom: 1px solid;
         border-radius: 5px;
+        width: 100%;
     }
 
 .wpcf7 textarea {
@@ -101,9 +102,9 @@ div.wpcf7, #mc_embed_signup {
 
 .dynamic-placeholder {
     position: relative;
-    top: 33px;
+    top: 36px;
     left: 19px;
-    transition: all 1s;
+    transition: all 1s, visibility 0s;
     cursor: text;
     z-index: 1;
 }
@@ -155,17 +156,54 @@ div.wpcf7, #mc_embed_signup {
     vertical-align: middle;
 }
 
-.news-section .elementor-widget-html {
-    height: 100%;
-}
 
+/* Mobile */
+@media only screen AND (max-width: 767px) {
+
+}
 /* Tablet */
 @media only screen AND (max-width: 1024px) AND (min-width: 768px) {
     .merch-section .merch-img .elementor-row {
         justify-content: center;
     }
+    .music-column .elementor-widget-wrap {
+        align-items: baseline !important;
+        justify-content: space-between;
+    }
+    .music-column .second-single, .music-column .third-single {
+        max-width: 49%;
+    }
+    .music-column .second-single {
+        box-shadow: 12px 0 25px -25px;
+    }
+    .music-column .third-single {
+        box-shadow: -12px 0 25px -25px;
+    }
+    .third-single div.third-image {
+        margin-bottom: 0;
+    }
+    .music-column .music-icon-list {
+        box-shadow: 0 10px 40px -25px rgba(0,0,0,0.5);
+    }
+    
 }
-/* End Elementor */
+/* Mobile & Tablet */
+@media only screen AND (max-width:1024px) {
+    .music-column .music-icon-list li {
+        display: inline-flex;
+        padding: 0 10px;
+    }
+    .logo-list li.elementor-icon-list-item {
+        padding: 10px;
+    }
+}
+
+/* PC */
+@media only screen AND (min-width: 1025px) {
+
+}
+
+/** End Elementor **/
 
 /** Events calendar **/
 .mec-container .col-md-8 img {
@@ -250,6 +288,91 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
     /* End Fonts */
 
 /* End events */
+
+
+
+/** News **/
+
+.news-section .elementor-widget-html {
+    height: 100%;
+}
+.banner-background {
+    position: relative;
+ }
+ .banner-content {
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-end;;
+     z-index: 1;
+ }
+ .banner-link {
+     z-index: 2;
+ }
+ .banner-content, .banner-link {
+     height: 100%;
+     width: 100%;
+     left: 0;
+     top: 0;
+     position: absolute;     
+ }
+ .banner-layer {
+     width: 100%;
+     padding: 3rem 0.5rem 0;
+     background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
+     transition: all 0.5s;
+ }
+ .banner-content span {
+     display: block;
+     color: #fff;
+     font-weight: 300;
+     text-align: center;
+ }
+ .banner-content .banner-title {
+     font-size: 1.4rem;
+     transition: all 1s;
+ }
+ .banner-content .banner-description {
+     max-height: 1px;
+     transition: all 0.5s;
+ }
+ .banner-content .banner-button {
+    font-size: 0.5rem;
+    box-shadow: 0 -1px 10px #fff;
+    width: 60%;
+    margin: auto;
+    transition: all 1s 100ms;
+ }
+ .banner-description, .banner-button {
+     opacity: 0;
+ }
+ .banner-link:hover + .banner-content .banner-layer .banner-title{
+     margin-bottom: 0.5rem;
+ }
+ .banner-link:hover + .banner-content .banner-layer .banner-description {
+     max-height: 90px;
+     opacity: 1;
+     margin-bottom: 1rem;
+ }
+  .banner-link:hover + .banner-content .banner-layer .banner-button {
+      opacity: 1;
+      font-size: 1.2rem;
+      box-shadow: 0 -2px 15px #ff6a01;
+  }
+  
+  @media only screen AND (max-width: 1024px) { /* Mobile & Tablet */
+      .banner-link:hover + .banner-content .banner-layer .banner-title {
+          margin-bottom: 0.25rem;
+      }
+      .banner-link:hover + .banner-content .banner-layer .banner-description {
+          max-height: 110px;
+      }
+  }
+
+
+
+/** END news **/
+
+
 
 
 
@@ -353,7 +476,7 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
 #mc_embed_signup .small-meta {font-size: 11px;}
 #mc_embed_signup .nowrap {white-space:nowrap;}
 
-#mc_embed_signup .mc-field-group {clear:left; position:relative; width:96%; padding-bottom:3%; min-height:50px;}
+#mc_embed_signup .mc-field-group {clear:left; position:relative; width:96%; padding-bottom:6%; min-height:50px;}
 #mc_embed_signup .size1of2 {clear:none; float:left; display:inline-block; width:46%; margin-right:4%;}
 * html #mc_embed_signup .size1of2 {margin-right:2%; /* Fix for IE6 double margins. */}
 #mc_embed_signup .mc-field-group label {display:block; margin-bottom:3px;}
