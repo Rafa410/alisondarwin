@@ -1,4 +1,4 @@
-<?php
+<?php	/* alisondarwin.com */
 
 // Sobreescribe scripts
 add_action( 'wp_enqueue_scripts', 'override_scripts', 100 );
@@ -40,7 +40,7 @@ function generate_custom_footer() {
 				do_action( 'generate_before_copyright' );
 				?>
 				<div class="copyright-bar">
-					<span class="copyright">© <?php echo date('Y'); ?> alison DARWIN</span>
+					<span class="copyright">© <?php echo date('Y'); ?> <a href="https://www.alisondarwin.com">alison DARWIN</a></span>
 				</div>
 			</div>
 		</footer><!-- .site-info -->

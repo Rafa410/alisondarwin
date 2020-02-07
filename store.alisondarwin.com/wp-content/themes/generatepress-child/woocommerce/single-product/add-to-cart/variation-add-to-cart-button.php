@@ -36,7 +36,7 @@ global $product;
 	
 	<button type="submit" class="single_add_to_cart_button button alt"
 	[disabled]="!variations_availability[currentVariation] && variations_availability[currentVariation] != NULL"
-	><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
+	><?php echo gpc_svg_cart_icon() . esc_html( $product->single_add_to_cart_text() ); ?></button>
 
 	<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 

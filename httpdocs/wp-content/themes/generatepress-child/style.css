@@ -43,6 +43,10 @@ a {
         color: #ff6a01;
     }
 
+.one-container .site-content {
+    padding-top: 60px;
+}
+
 /** Contact form & subscription **/
 
 div.wpcf7, #mc_embed_signup {
@@ -82,7 +86,7 @@ div.wpcf7, #mc_embed_signup {
 }
 
 .wpcf7 p .wpcf7-submit, #mc_embed_signup #mc-embedded-subscribe-form input.button {
-    box-shadow: 2px 2px 8px 0 #555555;
+    box-shadow: 0 5px 15px -5px rgba(0,0,0,0.5);
     transition: all 0.6s;
 }
 
@@ -239,8 +243,20 @@ address.mec-events-address {
 div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalcal-box input, div.mec-wrap .mec-totalcal-box select {
     font-family: 'Montserrat Regular', Helvetica, Arial, sans-serif;
 }
-    /* End Fonts*/
+:root:not(#_) h1 {
+    font-family: 'Special Elite', Georgia;
+}
+
+    /* End Fonts */
+
 /* End events */
+
+
+
+.logo-list svg {
+    vertical-align: middle;
+}
+
 .elementor-social-icon.elementor-repeater-item-8293466 {
     background: #f09433;
     background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
@@ -249,6 +265,10 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
 
 .site-footer .site-info {
     padding: 0.25em;
+}
+
+.site-info .copyright a:hover {
+    color: #ff6a01;
 }
 
 .site-info .copyright-bar .copyright {
@@ -407,3 +427,4 @@ div.mec-wrap .mec-totalcal-box .mec-totalcal-view span, div.mec-wrap .mec-totalc
 }
 
 /* End Mailchimp */
+

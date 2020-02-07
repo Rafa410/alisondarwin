@@ -1,4 +1,4 @@
-<?php
+<?php	/* store.alisondarwin.com */
 
 // Devuelve un booleano indicando si la página actual es AMP
 function is_amp() {
@@ -7,12 +7,6 @@ function is_amp() {
 
 // Cambios a hacer en páginas AMP
 if (is_amp()) {
-
-	/** Quita la pestaña 'sort by' **/
-	add_action( 'init', 'gpc_remove_tab_ordering_amp' );
-	function gpc_remove_tab_ordering_amp() {
-		remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 ); 
-	}
 	
 	/** Override del viewport en páginas AMP, para añadir 'minimum-scale=1' **/
 	add_action( 'wp_head', 'generate_add_viewport' );
@@ -129,15 +123,10 @@ if (is_amp()) {
 		
 		foreach ( $product->get_available_variations() as $variation ) { // Loop through all available variations
 			
-			/*$variation_id = $variation['variation_id']; // Get variation ID
-			$variation_obj = new WC_Product_variation( $variation_id ); // Create new Product Variation Object with variation ID
-			$variation_attributes = implode( $variation_obj->get_variation_attributes() ); // Get variation name from Object
-			*/
-			$variation_attributes = implode ($variation['attributes'] );
+			$variation_attributes = implode ($variation['attributes'] ); // Get all attributes for variations
 
-			$variations_are_in_stock[$variation_attributes] = $variation['is_in_stock']; // $variation['is_in_stock'] return boolean
+			$variations_are_in_stock[$variation_attributes] = $variation['is_in_stock']; // Array of bools specifying if a variations has stock or not.
 			
-
 		}
 
 		return json_encode( $variations_are_in_stock ); // Returns an array with variations availabililty encoded in JSON format 
@@ -154,6 +143,13 @@ if (is_amp()) {
 	// NEXT
 
 } // END is_amp()
+
+
+/** Quita la pestaña 'sort by' **/
+add_action( 'init', 'gpc_remove_tab_ordering_amp' );
+function gpc_remove_tab_ordering_amp() {
+	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 ); 
+}
 
 // Sobreescribe el script del plugin Multi Step Checkout
 add_action( 'wp_enqueue_scripts', 'gpc_override_multistep_checkout_script', 100 );
@@ -205,7 +201,7 @@ function gpc_generate_custom_footer() {
 				do_action( 'generate_before_copyright' );
 				?>
 				<div class="copyright-bar">
-					<span class="copyright">© <?php echo date('Y'); ?> Tienda Oficial alison DARWIN</span>
+					<span class="copyright">© <?php echo date('Y'); ?> <a href="https://store.alisondarwin.com">Tienda Oficial alison DARWIN</a></span>
 				</div>
 			</div>
 		</footer><!-- .site-info -->
@@ -217,6 +213,27 @@ function gpc_generate_custom_footer() {
 add_action( 'wp_print_styles', function() {
     if (!is_admin_bar_showing()) wp_deregister_style( 'dashicons' );
 }, 100);
+
+
+function gpc_svg_cart_icon($width = 25, $height = 'auto', $color = '#fff') {
+	return '<svg xmlns="http://www.w3.org/2000/svg" width="' . $width . '" height="' . $height . '" fill="' . $color . '" viewBox="0 0 512 512"><path d="m164.960938 300.003906h.023437c.019531 0 .039063-.003906.058594-.003906h271.957031c6.695312 0 12.582031-4.441406 14.421875-10.878906l60-210c1.292969-4.527344.386719-9.394532-2.445313-13.152344-2.835937-3.757812-7.269531-5.96875-11.976562-5.96875h-366.632812l-10.722657-48.253906c-1.527343-6.863282-7.613281-11.746094-14.644531-11.746094h-90c-8.285156 0-15 6.714844-15 15s6.714844 15 15 15h77.96875c1.898438 8.550781 51.3125 230.917969 54.15625 243.710938-15.941406 6.929687-27.125 22.824218-27.125 41.289062 0 24.8125 20.1875 45 45 45h272c8.285156 0 15-6.714844 15-15s-6.714844-15-15-15h-272c-8.269531 0-15-6.730469-15-15 0-8.257812 6.707031-14.976562 14.960938-14.996094zm312.152343-210.003906-51.429687 180h-248.652344l-40-180zm0 0"></path><path d="m150 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path><path d="m362 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path></svg>';
+}
+
+add_action( 'wp_enqueue_scripts', 'gpc_remove_fontawesome', 20 );
+function gpc_remove_fontawesome() {
+	wp_dequeue_style( 'wpmenucart-icon' );
+	wp_deregister_style( 'wpmenucart-icon' );
+
+	wp_dequeue_style( 'wpmenucart-fontawesome' );
+	wp_deregister_style( 'wpmenucart-fontawesome' );
+}
+
+add_filter( 'wpmenucart_menu_item_a_content', 'gpc_modify_cart_icon' );
+function gpc_modify_cart_icon( $menu_item_a_content ) {
+	$cart_icon_svg = gpc_svg_cart_icon(20, 20, '#000');
+	$menu_item_a_content = $cart_icon_svg . $menu_item_a_content;
+	return $menu_item_a_content;
+}
 
 
 ?>
