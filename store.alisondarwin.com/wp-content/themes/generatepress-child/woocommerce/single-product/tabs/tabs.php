@@ -39,8 +39,9 @@ if ( ! empty( $product_tabs ) ) : ?>
 		<?php endif; ?>
 		
 		<ul class="tabs wc-tabs" role="tablist">
+			<?php $tab_index = 1; ?>
 			<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-				<li class="<?php echo esc_attr( $key ); ?>_tab" id="tab-title-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>"
+				<li class="<?php echo esc_attr( $key ); ?>_tab" id="tab-title-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>" tabindex="<?php echo $tab_index++; ?>"
 				<?php if ( is_amp() ) : ?>
 						on="tap:AMP.setState( { wc_tab_expanded: '<?php echo esc_attr( $key ); ?>' } )"	
 						[class]=" (wc_tab_expanded == '<?php echo esc_attr( $key ); ?>') ? '<?php echo esc_attr( $key ); ?>_tab active' : '<?php echo esc_attr( $key ); ?>_tab' "

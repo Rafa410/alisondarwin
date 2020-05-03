@@ -1,0 +1,126 @@
+<script>
+
+/**
+  * Detecta el idioma del navegador del usuario y le redirige a la página con el idioma correcto
+  * Se crea una cookie para guardar el idioma preferido
+  * La cookie se actualiza si el usuario escoge un idioma manualmente
+**/
+
+function createCookie(name, value, days) {
+    if (days)
+    {
+        var date = new Date(); date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = '; expires=' + date.toGMTString();
+        var domain = '; domain=.alisondarwin.com'; // Es necesario ponerlo para que la cookie sea la misma en subdominios
+    }
+    else
+    {
+        var expires = '';
+    }
+    document.cookie = name + '=' + value + expires + domain + '; path=/';
+}
+
+var path = {{Page Path}}; // Variable de Google Tag Manager que contiene un string con la ruta de la URL
+var currentLang = path.substring(1, 4); // Devuelve todo lo que hay entre los caracteres 1 y 4 de la ruta (el idioma actual de la página web)
+
+if ((currentLang == 'en/') || (currentLang == 'en'))
+{
+    currentLang = 'en';
+}
+else
+{
+    currentLang = 'es';
+}
+
+var cookieValue = {{Language}}; // Variable de Google Tag Manager con el valor de la cookie 'lang'
+
+if (cookieValue == 'es') // Si el valor de la cookie es 'es' y el lenguaje actual de la página no es español, redirigir a la página en español
+{
+    if (currentLang != 'es') {
+        languageRedirection(cookieValue); // Redirect to ES
+    }
+}
+else if (cookieValue == 'en') // Si el valor de la cookie es 'en' y el lenguaje actual de la página no es inglés, redirigir a la página en inglés
+{
+    if (currentLang != 'en') {
+        languageRedirection(cookieValue);// Redirect to EN
+    }
+}
+else // Todavía no se ha asignado ningún idioma
+{
+    var userLang = (navigator.language || navigator.userLanguage).substring(0, 2); // Devuelve el idioma del navegador del usuario
+
+    if (userLang == 'ca') // Si el idioma del navegador es catalán, asignar español
+    {
+        userLang = 'es';
+    }
+    else if (userLang != 'es') // Si el idioma del navegador no es español, asignar el inglés como idioma por defecto
+    {
+        userLang = 'en';
+    }
+
+    if (currentLang == 'es') // Si el idioma actual de la web es español y el idioma del navegador es inglés, redirigir a la página en inglés
+    {
+        if (userLang == 'en') {
+            document.body.classList.add('show-language-switcher');
+
+            document.getElementById('switch-language').onclick = function() {
+                createCookie('lang', userLang, 365);
+                languageRedirection(userLang); // Redirect to EN
+            }  
+        }
+    }
+    else // Si el idioma actual de la web es inglés y el idioma del navegador es español, redirigir a la página en español.
+    {
+        if (userLang == 'es') {
+            document.body.classList.add('show-language-switcher');
+
+            document.getElementById('switch-language').onclick = function() {
+                createCookie('lang', userLang, 365);
+                languageRedirection(userLang); // Redirect to ES
+            }  
+        }
+    }
+}
+
+var langSwitcher = document.querySelectorAll("#trp-floater-ls-language-list a");
+
+for (var i = 0; i < langSwitcher.length; i++) 
+{
+    langSwitcher[i].onclick = function() {
+        if (this.innerText == 'Español')
+        {
+            createCookie('lang', 'es', 365);
+        }
+        else if (this.innerText == 'English (UK)')
+        {
+            createCookie('lang', 'en', 365);
+        }
+    }
+}
+
+document.getElementById('close-language-switcher').onclick = function() {
+    document.getElementById('language-switcher').style.display = 'block';
+    
+    setTimeout(function() { // Espera 2 segundos hasta poner display:none para que se vea la transicion CSS de altura y opacidad.
+        document.getElementById('language-switcher').style.display = 'none';
+    }, 2000);
+
+    document.body.classList.remove('show-language-switcher');
+    
+    createCookie('lang', currentLang, 365);
+}
+  
+function languageRedirection(lang) {
+    if (lang == 'es') {
+        var newURL = 'https://' + {{Page Hostname}} + path.slice(3) + window.location.hash;
+        window.location.href = newURL;
+    } 
+    else if (lang == 'en') {
+        var newURL = 'https://' + {{Page Hostname}} + '/en' + path + window.location.hash;
+        window.location.href = newURL;
+    }
+}
+
+
+</script>

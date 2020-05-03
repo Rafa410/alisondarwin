@@ -50,9 +50,12 @@ function generate_custom_footer() {
 
 
 // Quita los dashicons si no se muestra la barra de admin
-add_action( 'wp_print_styles', function() {
-    if (!is_admin_bar_showing()) wp_deregister_style( 'dashicons' );
-}, 100);
+add_action( 'wp_print_styles', 'remove_dashicons' , 100);
+function remove_dashicons() {
+    if ( ! is_admin_bar_showing() ) {
+		wp_deregister_style( 'dashicons' );
+	}
+}
 
 
 
@@ -70,6 +73,15 @@ function generatepress_agregar_nueva_zona_widgets() {
 		'after_title'   => '</h2>',
 	) );
 	
+}
+
+
+// Quita el campo URL de los comentarios en eventos
+add_filter( 'comment_form_default_fields', 'gcp_custom_comment_form_fields', 100 );
+function gcp_custom_comment_form_fields( $fields )
+{
+	unset($fields['url']);
+	return $fields;
 }
 
 // Añade async="false" a varios scripts para evitar errores [NO ESTÁ EN USO ACTUALMENTE]
