@@ -28,10 +28,8 @@ if ( $max_value && $min_value === $max_value ) {
 	$label = ! empty( $args['product_name'] ) ? sprintf( __( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $args['product_name'] ) ) : __( 'Quantity', 'woocommerce' );
 	?>
 	<div class="quantity">
-		<?php if( is_product() ) : ?>
-			<label for="<?php echo esc_attr( $input_id ); ?>"><?php echo __( 'Quantity', 'woocommerce' ); ?></label>
-		<?php endif; ?>
 		<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_attr( $label ); ?></label>
+		<span class="minus quantity-btn"></span>
 		<input
 			type="number"
 			id="<?php echo esc_attr( $input_id ); ?>"
@@ -44,6 +42,7 @@ if ( $max_value && $min_value === $max_value ) {
 			title="<?php echo esc_attr_x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
 			size="4"
 			inputmode="<?php echo esc_attr( $inputmode ); ?>" />
+		<span class="plus quantity-btn"></span>
 	</div>
 	<?php
 }
