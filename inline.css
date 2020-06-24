@@ -1,0 +1,164 @@
+.inside-header, .hidden {
+	display: none;
+}
+.offscreen {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.grecaptcha-badge { 
+    visibility: hidden;
+}
+
+
+/** Header **/
+
+.main-navigation {
+    position: fixed;
+	width: 100%;
+    font-size: 18px;
+    top: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%);
+    box-shadow: 0 5px 20px -6px #353535;
+    overflow: hidden;
+    z-index: 100;
+}
+    .main-navigation::before {
+        background: linear-gradient(179deg, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.3) 100%);
+        position: absolute;
+        content: "";
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.5s; 
+    }
+    .main-navigation.fixed::before {
+        opacity: 1;
+    }
+
+.main-navigation .inside-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    transition: padding 0.5s;
+}
+.main-navigation.fixed .inside-navigation {
+    padding: 5px 0 0;
+}
+
+.main-navigation .menu-toggle {
+    flex: 0 0 1em;
+    order: 1;
+    line-height: 35px;
+	text-align: left;
+}
+
+.main-navigation .logo-menu {
+    display: inline-block;
+    max-width: 25%;
+    margin-right: auto;
+    transition: max-width 0.5s;
+}
+    .main-navigation.fixed .logo-menu {
+        max-width: 20%;
+    }
+
+.main-navigation .logo-menu h1 {
+    font-family: 'Special Elite';
+    color: #fff;
+    font-size: 1.7em;
+    margin: 0;
+    transition: all 0.5s;
+}
+    .main-navigation .logo-menu:hover h1 {
+        color: #ff6a01;
+    }
+    .main-navigation.fixed .logo-menu h1 {
+        font-size: 1.5em;
+    }
+
+.main-navigation .main-nav {
+    display: inline-block;
+    max-width: 75%;
+    margin-left: auto;
+    transition: max-width 0.5s;
+}
+    .main-navigation.fixed .main-nav {
+        max-width: 80%;
+    }
+    .main-navigation .main-nav ul li.menu-item > a {
+        font: bold 12px 'Open Sans', sans-serif;
+        letter-spacing: 2px;
+        line-height: 45px;
+        text-transform: uppercase;
+        background-color: transparent;
+        transition: all 0.4s 0.1s;
+    }
+        .main-navigation .main-nav ul.menu li.menu-item > a:hover, 
+        .main-navigation .main-nav ul.menu li.menu-item.sfHover > a {
+            color: #ff6a01;
+            background-color: transparent;
+            transition-delay: 0s;
+        }
+
+.main-navigation a {
+    font-size: inherit;
+}
+.main-navigation button {
+	font-family: inherit;
+}
+
+
+@media only screen AND (max-width: 1024px) {
+    .main-navigation ul, .gen-sidebar-nav {
+        display: none;
+    }
+    .main-navigation .inside-navigation {
+        flex-wrap: wrap;
+    }
+    .main-navigation .logo-menu {
+        order: 2;
+        flex: 1 1 auto;
+        margin: auto;
+        min-width: 50%;
+        max-width: 100%;
+    }
+    .main-navigation .main-nav {
+        order: 3;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+    .main-navigation.fixed .main-nav {
+        max-width: 100%;
+    }
+
+    .main-navigation .menu-toggle {
+        display: block;
+        font-size: inherit;
+    }
+    .main-navigation .logo-menu h1 {
+        font-size: 1.3em;
+    }
+    .main-navigation.fixed .logo-menu h1 {
+        font-size: 1.25em;
+    }
+}
+
+/** End header **/
+
+
+@media (max-width: 767px) {
+    .elementor-17 .elementor-element.portada-section:not(.elementor-motion-effects-element-type-background), .elementor-17 .elementor-element.portada-section > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+        height: 100vh;
+    }
+}

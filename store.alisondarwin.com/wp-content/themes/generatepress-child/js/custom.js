@@ -5,9 +5,9 @@
         let timeout;
 
         $( ".minus" ).on( 'click', function() {
-            var $input = $( this ).parent().find( 'input.qty' ),
+            var $input = $( this ).parent().parent().find( 'input.qty' ),
                 minVal = $input.prop( 'min' ),
-                currVal = parseInt( $input.val(), 10 );
+                currVal = parseInt( $input.val() );
 
             if (timeout) {
                 clearTimeout(timeout);
@@ -22,16 +22,19 @@
             };
 
             timeout = setTimeout(function() {
-                $input.trigger( 'updated_addons' );
+                $input
+                    .trigger( 'updated_addons' )
+                    .trigger ( 'keyup' );
+                $( document.body ).trigger( 'woocommerce_variation_has_changed' );
             }, 500);
 
             /* Cart page: Enable button 'update cart' when quantity changed */
-            $( "[name='update_cart']" ).prop( "disabled", false );
+            // $( "[name='update_cart']" ).prop( "disabled", false ); // Not necessary, now it updates automatically
         });
 
         $( ".plus" ).on( 'click', function() {
-            var $input = $( this ).parent().find( 'input.qty' ),
-                currVal = parseInt( $input.val(), 10 ),
+            var $input = $( this ).parent().parent().find( 'input.qty' ),
+                currVal = parseInt( $input.val() ),
                 max = parseInt( $input.prop( 'max' ) );
 
             if (timeout) {
@@ -45,29 +48,46 @@
             $input.val( currVal + 1 ).trigger( 'change' );
 
             timeout = setTimeout(function() {
-                $input.trigger( 'updated_addons' );
+                $input
+                    .trigger( 'updated_addons' )
+                    .trigger ( 'keyup' );
+                $( document.body ).trigger( 'woocommerce_variation_has_changed' );
             }, 500);
 
             /* Cart page: Enable button 'update cart' when quantity changed */
-            $( "[name='update_cart']" ).prop( "disabled", false );
+            // $( "[name='update_cart']" ).prop( "disabled", false );
         });
 
     }
 
+    /* When the user scroll down, adds the class 'fixed' to the header */
+    function stickyMenu()
+    {
+        const header = document.getElementById('site-navigation');
 
+        window.onscroll = function () {
+
+            if (window.pageYOffset > 20) {
+                header.classList.add('fixed');
+            }
+            else {
+                header.classList.remove('fixed');
+            }
+        }
+    }
 
 
     /************** DOCUMENT READY **************/
 
     $(document).ready(function() {
 
-        /* woocommerce: event when update cart total */
+        stickyMenu();
+
+        /* woocommerce: event triggered when cart updated */
 		$( document.body ).on( 'updated_cart_totals', function() {
 			modify_product_quantity();
 		});
-
 		modify_product_quantity();
-
 
 
     }) // END $(doc).ready

@@ -13,7 +13,7 @@
             
             timeout = setTimeout(function() {
                 $('[name="update_cart"]').trigger('click');
-            }, 1000 ); // sSchedule update cart event with 1000 miliseconds delay
+            }, 1000 ); // Schedule update cart event with 1000 miliseconds delay
         });
     }
 

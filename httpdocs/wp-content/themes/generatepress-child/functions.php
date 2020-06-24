@@ -16,6 +16,10 @@ function override_scripts() {
 add_action( 'wp_enqueue_scripts', 'customScripts');
 function customScripts() {
 	
+	// Todas las páginas
+	wp_register_script('custom-js', get_stylesheet_directory_uri(). '/js/custom.min.js', array('jquery'), '1.1', true );
+	wp_enqueue_script('custom-js');
+
 	// Pagina de inicio
 	if (is_front_page()) {
 		wp_register_script('home-page', get_stylesheet_directory_uri(). '/js/home-page.js', array('jquery'), '1.0', true );
@@ -78,11 +82,25 @@ function generatepress_agregar_nueva_zona_widgets() {
 
 // Quita el campo URL de los comentarios en eventos
 add_filter( 'comment_form_default_fields', 'gcp_custom_comment_form_fields', 100 );
-function gcp_custom_comment_form_fields( $fields )
-{
+function gcp_custom_comment_form_fields( $fields ) {
 	unset($fields['url']);
 	return $fields;
 }
+
+// Añade el logo al menu del header
+add_action( 'generate_inside_navigation' , 'gpc_generate_menu_logo' );
+function gpc_generate_menu_logo() {
+	$html = '<div class="logo-menu"><a href="https://www.alisondarwin.com"><h1>alison DARWIN</h1></a></div>';
+	echo $html;
+}
+
+// Quita el texto "Menú" del header 
+add_filter( 'generate_mobile_menu_label', 'gpc_remove_text_menu' );
+function gpc_remove_text_menu( $text ) {
+	$text = '';
+	return $text;
+}
+
 
 // Añade async="false" a varios scripts para evitar errores [NO ESTÁ EN USO ACTUALMENTE]
 /*function async_false_cloudflare($tag, $handle) {

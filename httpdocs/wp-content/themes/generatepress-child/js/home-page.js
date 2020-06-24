@@ -98,7 +98,7 @@ if (isMobile) {
         const phone = document.querySelectorAll('#contact-info .elementor-icon-list-item a')[1];
 
         email.href = 'mailto:' + email.innerText.slice(2, -2); // Elimina los 2 primeros ( '· ' ) y últimos ( ' ·' ) caracteres
-        phone.href = 'https://wa.me/' + phone.innerText.replace(/\s+/g, '').slice(2, -1); // Primer quita los espacios y después los 2 primeros caracteres ( '·+' ) y el último caracter (·)
+        phone.href = 'https://wa.me/' + phone.innerText.replace(/\s+/g, '').slice(2, -1); // Primero quita los espacios y después los 2 primeros caracteres ( '·+' ) y el último caracter (·)
 });
 
 

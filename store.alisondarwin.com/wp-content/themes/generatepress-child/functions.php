@@ -6,7 +6,7 @@ add_action( 'wp_enqueue_scripts', 'gcp_custom_scripts');
 function gcp_custom_scripts() {
 	
 	// Script to load on all pages
-	wp_register_script( 'custom-script', get_stylesheet_directory_uri() . '/js/custom.min.js', array('jquery'), '1.0', true );
+	wp_register_script( 'custom-script', get_stylesheet_directory_uri() . '/js/custom.min.js', array('jquery'), '1.5', true );
 	wp_enqueue_script( 'custom-script' );	
 
 	if ( is_cart() ) { // Scripts to load on cart page
@@ -88,18 +88,6 @@ add_action( 'wp_print_styles', function() {
 }, 100);
 
 
-function gpc_svg_cart_icon($width = 25, $height = 25, $color = '#fff') {
-	return '<svg xmlns="http://www.w3.org/2000/svg" width="' . $width . '" height="' . $height . '" fill="' . $color . '" viewBox="0 0 512 512"><path d="m164.960938 300.003906h.023437c.019531 0 .039063-.003906.058594-.003906h271.957031c6.695312 0 12.582031-4.441406 14.421875-10.878906l60-210c1.292969-4.527344.386719-9.394532-2.445313-13.152344-2.835937-3.757812-7.269531-5.96875-11.976562-5.96875h-366.632812l-10.722657-48.253906c-1.527343-6.863282-7.613281-11.746094-14.644531-11.746094h-90c-8.285156 0-15 6.714844-15 15s6.714844 15 15 15h77.96875c1.898438 8.550781 51.3125 230.917969 54.15625 243.710938-15.941406 6.929687-27.125 22.824218-27.125 41.289062 0 24.8125 20.1875 45 45 45h272c8.285156 0 15-6.714844 15-15s-6.714844-15-15-15h-272c-8.269531 0-15-6.730469-15-15 0-8.257812 6.707031-14.976562 14.960938-14.996094zm312.152343-210.003906-51.429687 180h-248.652344l-40-180zm0 0"></path><path d="m150 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path><path d="m362 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path></svg>';
-}
-
-// Añade un icono de carrito en svg al boton del carrito en la barra superior
-add_filter( 'wpmenucart_menu_item_a_content', 'gpc_modify_cart_icon' );
-function gpc_modify_cart_icon( $menu_item_a_content ) {
-	$cart_icon_svg = gpc_svg_cart_icon(20, 20, '#000');
-	$menu_item_a_content = $cart_icon_svg . $menu_item_a_content;
-	return $menu_item_a_content;
-}
-
 add_action( 'wp_enqueue_scripts', 'gpc_remove_fontawesome', 20 );
 function gpc_remove_fontawesome() {
 	wp_dequeue_style( 'wpmenucart-icon' );
@@ -125,7 +113,45 @@ function woocommerce_checkout_coupon_form() {
 }
 
 
-// NEXT FUNCTION
+function gpc_svg_cart_icon($width = 25, $height = 25, $color = '#fff') {
+	return '<svg xmlns="http://www.w3.org/2000/svg" width="' . $width . '" height="' . $height . '" fill="' . $color . '" viewBox="0 0 512 512"><path d="m164.960938 300.003906h.023437c.019531 0 .039063-.003906.058594-.003906h271.957031c6.695312 0 12.582031-4.441406 14.421875-10.878906l60-210c1.292969-4.527344.386719-9.394532-2.445313-13.152344-2.835937-3.757812-7.269531-5.96875-11.976562-5.96875h-366.632812l-10.722657-48.253906c-1.527343-6.863282-7.613281-11.746094-14.644531-11.746094h-90c-8.285156 0-15 6.714844-15 15s6.714844 15 15 15h77.96875c1.898438 8.550781 51.3125 230.917969 54.15625 243.710938-15.941406 6.929687-27.125 22.824218-27.125 41.289062 0 24.8125 20.1875 45 45 45h272c8.285156 0 15-6.714844 15-15s-6.714844-15-15-15h-272c-8.269531 0-15-6.730469-15-15 0-8.257812 6.707031-14.976562 14.960938-14.996094zm312.152343-210.003906-51.429687 180h-248.652344l-40-180zm0 0"></path><path d="m150 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path><path d="m362 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path></svg>';
+}
+
+// Añade un icono de carrito en svg al boton del carrito en la barra superior
+add_filter( 'wpmenucart_menu_item_a_content', 'gpc_modify_cart_icon', 10, 4 );
+function gpc_modify_cart_icon( $menu_item_a_content, $menu_item_icon, $cart_contents, $item_data ) {
+	$menu_item_icon = gpc_svg_cart_icon();
+	$cart_contents = $item_data['cart_contents_count'];
+	$menu_item_a_content = $menu_item_icon . '<span class="cartcontents">' . $cart_contents . '</span>';
+	
+	return $menu_item_a_content;
+}
+
+$gpc_wpmenucart_menu_item_li = '';
+
+// apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li )
+$gpc_change_position_cart = function ( $menu_item_li ) use ( &$gpc_wpmenucart_menu_item_li ) {
+	$gpc_wpmenucart_menu_item_li = $menu_item_li;
+	echo '<p hidden>' . $gpc_wpmenucart_menu_item_li . '</p>';
+	return '';
+};
+add_filter( 'wpmenucart_menu_item_wrapper', $gpc_change_position_cart );
+
+// Añade el logo al menu del header
+$gpc_generate_menu_logo = function() use ( &$gpc_wpmenucart_menu_item_li ) {
+	$html = '<div class="logo-menu"><a href="https://store.alisondarwin.com"><h1>alison DARWIN</h1></a></div>';
+	$html .= $gpc_wpmenucart_menu_item_li;
+	echo $html;
+};
+add_action( 'generate_inside_navigation' , $gpc_generate_menu_logo, 100 );
+
+
+// Quita el texto "Menú" del header 
+add_filter( 'generate_mobile_menu_label', 'gpc_remove_text_menu' );
+function gpc_remove_text_menu( $text ) {
+	$text = '';
+	return $text;
+}
 
 
 
