@@ -123,10 +123,41 @@ body.woocommerce.archive {
 	font-family: inherit;
 }
 
+
+/** End header **/
+
+
+
+@media only screen AND (max-width: 767px) {
+    body.woocommerce.archive {
+        background-image: url(https://store.alisondarwin.com/wp-content/uploads/2019/12/fiestas-gracia-2018-mobile.jpg);
+    }
+}
+
+
 @media only screen AND (max-width: 1024px) {
-    .main-navigation ul, .gen-sidebar-nav {
+    .gen-sidebar-nav {
         display: none;
     }
+    .main-navigation .menu {
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        max-height: 1px;
+        transform: translateY(100px) scale(0);
+        transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .main-navigation.toggled .menu {
+        visibility: visible;
+        opacity: 1;
+        max-height: 320px;   
+        transform: translateY(0) scale(1);
+    }
+    .main-navigation .main-nav .menu > li {
+        display: block;
+        text-align: left;
+    }
+
     .main-navigation .inside-navigation {
         flex-wrap: wrap;
     }
@@ -155,15 +186,5 @@ body.woocommerce.archive {
     }
     .main-navigation.fixed .logo-menu h1 {
         font-size: 1.25em;
-    }
-}
-
-/** End header **/
-
-
-
-@media only screen AND (max-width: 767px) {
-    body.woocommerce.archive {
-        background-image: url(https://store.alisondarwin.com/wp-content/uploads/2019/12/fiestas-gracia-2018-mobile.jpg);
     }
 }

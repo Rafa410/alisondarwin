@@ -97,7 +97,7 @@
         max-width: 80%;
     }
     .main-navigation .main-nav ul li.menu-item > a {
-        font: bold 12px 'Open Sans', sans-serif;
+        font: bold 12px 'Open sans', sans-serif;
         letter-spacing: 2px;
         line-height: 45px;
         text-transform: uppercase;
@@ -118,11 +118,38 @@
 	font-family: inherit;
 }
 
+/** End header **/
+
+
+@media (max-width: 767px) {
+    .elementor-17 .elementor-element.portada-section:not(.elementor-motion-effects-element-type-background), .elementor-17 .elementor-element.portada-section > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+        height: 100vh;
+    }
+}
 
 @media only screen AND (max-width: 1024px) {
-    .main-navigation ul, .gen-sidebar-nav {
+    .gen-sidebar-nav {
         display: none;
     }
+    .main-navigation .menu {
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        max-height: 1px;
+        transform: translateY(100px) scale(0);
+        transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .main-navigation.toggled .menu {
+        visibility: visible;
+        opacity: 1;
+        max-height: 320px;   
+        transform: translateY(0) scale(1);
+    }
+    .main-navigation .main-nav .menu > li {
+        display: block;
+        text-align: left;
+    }
+
     .main-navigation .inside-navigation {
         flex-wrap: wrap;
     }
@@ -151,14 +178,5 @@
     }
     .main-navigation.fixed .logo-menu h1 {
         font-size: 1.25em;
-    }
-}
-
-/** End header **/
-
-
-@media (max-width: 767px) {
-    .elementor-17 .elementor-element.portada-section:not(.elementor-motion-effects-element-type-background), .elementor-17 .elementor-element.portada-section > .elementor-motion-effects-container > .elementor-motion-effects-layer {
-        height: 100vh;
     }
 }

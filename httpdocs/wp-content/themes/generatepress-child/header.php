@@ -91,10 +91,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	?>
 	
 	<!-- Preloader -->
-	<div id="wptime-plugin-preloader"></div>
+	<noscript>
+		<style type="text/css">#preloader{display:none!important}</style>
+	</noscript>
+	<div id="preloader">
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
 	<!-- /Preloader -->
-	
-	<h1 class="offscreen">alison DARWIN</h1>
 		
 	<div id="page" class="hfeed site grid-container container grid-parent">
 		<div id="content" class="site-content">

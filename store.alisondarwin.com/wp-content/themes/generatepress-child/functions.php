@@ -153,7 +153,15 @@ function gpc_remove_text_menu( $text ) {
 	return $text;
 }
 
-
+// Cambia los iconos SVG del menu por iconos CSS
+// $output = apply_filters( 'generate_svg_icon_element', $output, $icon ); [navigation.php]
+add_filter( 'generate_svg_icon_element', 'gpc_modify_menu_icon', 10, 2 );
+function gpc_modify_menu_icon($output, $icon) {
+	if ($icon == 'menu-bars') {
+		$output = '<span></span><span></span><span></span><span></span>';
+	}
+	return $output;
+}
 
 
 // Devuelve un booleano indicando si la página actual es AMP

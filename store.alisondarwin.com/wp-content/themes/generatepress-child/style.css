@@ -8,6 +8,11 @@ Author URI: https://store.alisondarwin.com
 Template: generatepress
 */
 
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
 /* Fonts */
 @font-face {
     font-family: Special Elite;
@@ -50,13 +55,16 @@ Template: generatepress
 }
 
 .woocommerce .product a.button {
-    background-color: #dfdcde;
     color: #515151;
+    background-color: transparent;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 1px;
 }
 
     .woocommerce .product a.button:hover {
-        background-color: #666;
-        color: #fff;
+        color: #ff6a01;
+        background-color: transparent;
     }
 
 
@@ -352,9 +360,8 @@ Template: generatepress
     order: 0;
     padding: 0;
     margin-right: 1em;
-    border: 1px solid #c3c3c3;
     border-radius: 7px 0 0 7px;
-    box-shadow: 0 1px 13px -5px rgba(0,0,0,0.5);
+    box-shadow: 0 6px 15px -10px;
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -378,11 +385,9 @@ Template: generatepress
 
 .woocommerce .quantity .quantity-btn {
     display: block;
-    height: 1.5rem;
-    font-size: 1.2rem;
+    height: 1.2em;
+    font-size: 1.2em;
     padding: 10px;
-    margin: -1px -1px -1px 0;
-    border: 1px solid #c3c3c3;
     cursor: pointer;
     box-sizing: border-box;
     transition: background-color 0.3s ease-in-out;
@@ -608,6 +613,9 @@ Template: generatepress
     #add_payment_method table.cart img, .woocommerce-cart table.cart img, .woocommerce-checkout table.cart img {
         width: 100%;
     }
+    .woocommerce .product a.button {
+        float: none;
+    }
 }
 
 @media only screen AND (max-width: 500px) {
@@ -692,6 +700,64 @@ Template: generatepress
 
 
 /* End WC */
+
+
+/* Menu toggle animation */
+
+.icon-menu-bars {
+    width: 1em;
+    height: 1em;
+    position: relative;
+  }
+  
+  .icon-menu-bars span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: #fff;
+    border-radius: 1px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0);
+    transition: 0.3s ease-in-out;
+  }
+  
+  .icon-menu-bars span:nth-child(1) {
+    top: 0;
+  }
+  
+  .icon-menu-bars span:nth-child(2),
+  .icon-menu-bars span:nth-child(3) {
+    top: 6px;
+  }
+  
+  .icon-menu-bars span:nth-child(4) {
+    top: 12px;
+  }
+  
+  .main-navigation.toggled .icon-menu-bars span:nth-child(1) {
+    top: 6px;
+    width: 0;
+    left: 50%;
+  }
+  
+  .main-navigation.toggled .icon-menu-bars span:nth-child(2) {
+    transform: rotate(45deg);
+  }
+  
+  .main-navigation.toggled .icon-menu-bars span:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+  
+  .main-navigation.toggled .icon-menu-bars span:nth-child(4) {
+    top: 6px;
+    width: 0;
+    left: 50%;
+  }
+
+/* End toggle animation */
+
 
 
 input[type=text], 

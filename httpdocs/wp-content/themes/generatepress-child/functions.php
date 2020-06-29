@@ -3,18 +3,33 @@
 // Sobreescribe scripts
 add_action( 'wp_enqueue_scripts', 'override_scripts', 100 );
 function override_scripts() {
+	$isMobile = preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+	
 	if (is_front_page()) {
-		wp_dequeue_script( 'wptime-plugin-preloader-script' );
-		wp_enqueue_script( 'custom_preloader_script', get_stylesheet_directory_uri().'/js/preloader-script.js', array( 'jquery' ), null, false);
+		wp_dequeue_script( 'jquery-ui-datepicker' ); // MEC datepicker.js
 	}
 	
 	wp_dequeue_script( 'google-recaptcha' );
-	wp_enqueue_script( 'custom_google-recaptcha', get_stylesheet_directory_uri().'/js/external-js/api.js', array(), null, false ); 
+	if ( !$isMobile ) {
+		wp_enqueue_script( 'custom-google-recaptcha', get_stylesheet_directory_uri().'/js/external-js/api.js', array(), null, true );
+	}
+
+	wp_dequeue_script( 'swiper' ); // Elementor swiper.js
+
+	if ( !is_admin() ) {
+		wp_dequeue_script( 'mec-select2-script' ); // MEC select2.js
+		wp_dequeue_style( 'mec-select2-style' ); // MEC select2.css
+		wp_dequeue_script( 'wp-color-picker' ); // MEC color-picker.js
+		wp_dequeue_style( 'wp-color-picker' ); // MEC color-picker.css
+	}
+	// wp_dequeue_script( 'mec-owl-carousel-script' ); // MEC owl.carousel.js (Used in frontend.js)
+	
+	
 }	
 
 // Carga scripts personalizados
-add_action( 'wp_enqueue_scripts', 'customScripts');
-function customScripts() {
+add_action( 'wp_enqueue_scripts', 'custom_scripts');
+function custom_scripts() {
 	
 	// Todas las páginas
 	wp_register_script('custom-js', get_stylesheet_directory_uri(). '/js/custom.min.js', array('jquery'), '1.1', true );
@@ -22,10 +37,13 @@ function customScripts() {
 
 	// Pagina de inicio
 	if (is_front_page()) {
-		wp_register_script('home-page', get_stylesheet_directory_uri(). '/js/home-page.js', array('jquery'), '1.0', true );
+		wp_register_script('home-page', get_stylesheet_directory_uri(). '/js/home-page.min.js', array('jquery'), '1.2', true );
 		wp_enqueue_script('home-page');	
+
+		// wp_register_script( 'custom-preloader', get_stylesheet_directory_uri() . '/js/preloader-script.js', array('jquery'), '1.0' );
+		// wp_enqueue_script( 'custom-preloader' );
 	}
-	// wp_enqueue_script( 'jquery-ui-datepicker' );
+
 }
 
 
@@ -101,6 +119,24 @@ function gpc_remove_text_menu( $text ) {
 	return $text;
 }
 
+// Cambia los iconos SVG del menu por iconos CSS
+// $output = apply_filters( 'generate_svg_icon_element', $output, $icon ); [navigation.php]
+add_filter( 'generate_svg_icon_element', 'gpc_modify_menu_icon', 10, 2 );
+function gpc_modify_menu_icon($output, $icon) {
+	if ($icon == 'menu-bars') {
+		$output = '<span></span><span></span><span></span><span></span>';
+	}
+	return $output;
+}
+
+
+// Remove elementor eicons
+// add_action( 'wp_enqueue_scripts', 'remove_elementor_eicons', 20 );
+// function remove_elementor_eicons() { 
+// 	if ( !is_admin() ) {
+// 		wp_deregister_style( 'elementor-icons' );
+// 	}
+// }
 
 // Añade async="false" a varios scripts para evitar errores [NO ESTÁ EN USO ACTUALMENTE]
 /*function async_false_cloudflare($tag, $handle) {
