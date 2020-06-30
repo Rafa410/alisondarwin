@@ -1,11 +1,14 @@
 (function($) {
 
-/* When the user scroll down, adds the class 'fixed' to the header and spot the current section */
+    /* 
+     * When the user scrolls down, add the class 'fixed' to the header 
+     * and spot the current section
+     */
     function stickyMenu() {
         const header = document.getElementById('site-navigation');
 
         let prevID;
-        const topMenu = $("#site-navigation");
+        const topMenu = $( '#site-navigation' );
         const topMenuHeight = topMenu.outerHeight();
 
         let menuItems = topMenu.find("ul a");
@@ -65,7 +68,6 @@
 
         stickyMenu();
         
-        // ...
 
     }) // END $(doc).ready
 

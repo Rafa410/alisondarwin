@@ -1,21 +1,80 @@
-.inside-header, .hidden {
+.elementor-element-15de7c73 {
+    background-image: url(/wp-content/uploads/2020/06/web-inicio-ali-d-scaled-e1591898849691.jpg); 
+}
+@media (max-width: 767px) {
+    .elementor-element-15de7c73 {
+        background-image: url(/wp-content/uploads/2020/06/portada-alison-darwin-m-r.jpg);
+    }
+}
+
+.inside-header, .hidden, .hidden-title {
 	display: none;
 }
-.offscreen {
-    border: 0;
-    clip: rect(0 0 0 0);
+.offscreen, .screen-reader-text {
+    position: absolute;
+    top: -10000em;
+    width: 1px;
     height: 1px;
     margin: -1px;
-    overflow: hidden;
     padding: 0;
-    position: absolute;
-    width: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
 }
 
 .grecaptcha-badge { 
     visibility: hidden;
 }
+#preloader {
+    display: none;
+}
+body.home:not(.elementor-editor-active):not(.elementor-editor-preview) #preloader,
+body.post-type-archive-mec-events #preloader {
+    display: flex;
+}
+#preloader {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width:100%;
+    height:100%;
+    background: #fff;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+    #preloader > div {
+        display: block;
+        position: absolute;
+        box-sizing: border-box;
+        width: 5em;
+        height: 5em;
+        border: 2px solid;
+        border-radius: 50%;
+        animation: loading 1.2s cubic-bezier(.5,0,.5,1) infinite;
+        border-color: #ff6a01 transparent transparent transparent;
+    }
+    #preloader div:nth-child(1) {
+        animation-delay: -0.45s
+    }
+    #preloader div:nth-child(2) {
+        animation-delay: -0.3s
+    }
+    #preloader div:nth-child(3) {
+        animation-delay: -0.15s
+    }
 
+@keyframes loading {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}
 
 /** Header **/
 
@@ -44,7 +103,6 @@
     .main-navigation.fixed::before {
         opacity: 1;
     }
-
 .main-navigation .inside-navigation {
     display: flex;
     justify-content: space-between;
@@ -55,14 +113,13 @@
 .main-navigation.fixed .inside-navigation {
     padding: 5px 0 0;
 }
-
 .main-navigation .menu-toggle {
+    display: none;
     flex: 0 0 1em;
     order: 1;
     line-height: 35px;
 	text-align: left;
 }
-
 .main-navigation .logo-menu {
     display: inline-block;
     max-width: 25%;
@@ -96,10 +153,17 @@
     .main-navigation.fixed .main-nav {
         max-width: 80%;
     }
+    .main-navigation ul {
+        margin: 0;
+    }
+    .main-navigation .menu-item {
+        display: inline-block;
+    }
     .main-navigation .main-nav ul li.menu-item > a {
         font: bold 12px 'Open sans', sans-serif;
         letter-spacing: 2px;
         line-height: 45px;
+        padding: 0 20px;
         text-transform: uppercase;
         background-color: transparent;
         transition: all 0.4s 0.1s;
@@ -120,8 +184,66 @@
 
 /** End header **/
 
+#language-switcher {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 0;
+    opacity: 0;
+    text-align: center;
+    background: #353535;
+    color: #fff;
+    z-index: 999;
+    transition: all 1s ease-in-out;
+}
+#language-switcher .grid-container {
+    padding: 1rem;
+}
+#language-switcher .grid-container img, #language-switcher .grid-container span, #language-switcher .grid-container svg {
+    vertical-align: middle;
+}
+#language-switcher .grid-container span {
+    padding: 5px;
+}
+#language-switcher .grid-container > svg {
+    padding: 6px;
+    margin: 0 3px;
+    vertical-align: middle;
+    cursor: pointer;
+    box-shadow: 0 6px 10px -10px;
+    transition: box-shadow 0.3s ease-in-out;    
+}
+#language-switcher .grid-container > svg:hover {
+    box-shadow: 0 6px 10px -5px;
+}
+.show-language-switcher #language-switcher {
+    display: block;
+    max-height: 100px;
+    opacity: 1;
+}
+.main-navigation {
+    transition: margin-top 1s ease-in-out;
+}
+.show-language-switcher .main-navigation {
+    margin-top: 4rem;
+}
 
-@media (max-width: 767px) {
+:root:not(#_) h1 {
+    font-family: 'Special Elite', Georgia;
+}
+
+@media only screen AND (max-width: 767px) {
+	#language-switcher {
+        top: auto;
+        bottom: 0;
+    }
+    .show-language-switcher .main-navigation {
+        margin-top: 0;
+    }
     .elementor-17 .elementor-element.portada-section:not(.elementor-motion-effects-element-type-background), .elementor-17 .elementor-element.portada-section > .elementor-motion-effects-container > .elementor-motion-effects-layer {
         height: 100vh;
     }
@@ -149,7 +271,6 @@
         display: block;
         text-align: left;
     }
-
     .main-navigation .inside-navigation {
         flex-wrap: wrap;
     }
@@ -168,7 +289,6 @@
     .main-navigation.fixed .main-nav {
         max-width: 100%;
     }
-
     .main-navigation .menu-toggle {
         display: block;
         font-size: inherit;
@@ -179,4 +299,18 @@
     .main-navigation.fixed .logo-menu h1 {
         font-size: 1.25em;
     }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #9a9a9a;
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #ff6a01;
 }
