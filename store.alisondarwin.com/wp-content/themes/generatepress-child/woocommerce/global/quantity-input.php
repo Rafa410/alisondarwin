@@ -12,7 +12,7 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.6.0
+ * @version 4.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -25,9 +25,10 @@ if ( $max_value && $min_value === $max_value ) {
 	<?php
 } else {
 	/* translators: %s: Quantity. */
-	$label = ! empty( $args['product_name'] ) ? sprintf( __( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $args['product_name'] ) ) : __( 'Quantity', 'woocommerce' );
+	$label = ! empty( $args['product_name'] ) ? sprintf( esc_html__( '%s quantity', 'woocommerce' ), wp_strip_all_tags( $args['product_name'] ) ) : esc_html__( 'Quantity', 'woocommerce' );
 	?>
 	<div class="quantity">
+		<?php do_action( 'woocommerce_before_quantity_input_field' ); ?>
 		<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_attr( $label ); ?></label>
 		<input
 			type="number"
@@ -40,15 +41,9 @@ if ( $max_value && $min_value === $max_value ) {
 			value="<?php echo esc_attr( $input_value ); ?>"
 			title="<?php echo esc_attr_x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
 			size="4"
+			placeholder="<?php echo esc_attr( $placeholder ); ?>"
 			inputmode="<?php echo esc_attr( $inputmode ); ?>" />
-		<span class="vertical-buttons">
-			<span class="plus quantity-btn">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 247.35L153 130.05l117.3 117.3 35.7-35.7-153-153-153 153z"></path></svg>
-			</span>
-			<span class="minus quantity-btn">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 58.65L153 175.95l117.3-117.3 35.7 35.7-153 153-153-153z"></path></svg>
-			</span>
-		</span>
+		<?php do_action( 'woocommerce_after_quantity_input_field' ); ?>
 	</div>
 	<?php
 }

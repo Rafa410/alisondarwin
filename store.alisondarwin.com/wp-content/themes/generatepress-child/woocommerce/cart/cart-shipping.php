@@ -39,7 +39,6 @@ $calculator_text          = '';
 						}
 						printf( '<label for="shipping_method_%1$s_%2$s">%3$s</label>', $index, esc_attr( sanitize_title( $method->id ) ), wc_cart_totals_shipping_method_label( $method ) ); // WPCS: XSS ok.
 						
-						add_action( 'woocommerce_after_shipping_rate', 'woocommerce_free_shipping_label', 10 ); 
 						do_action( 'woocommerce_after_shipping_rate', $method, $index );
 						
 						?>

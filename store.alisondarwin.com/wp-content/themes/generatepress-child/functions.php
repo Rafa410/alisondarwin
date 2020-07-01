@@ -6,7 +6,7 @@ add_action( 'wp_enqueue_scripts', 'gcp_custom_scripts');
 function gcp_custom_scripts() {
 	
 	// Script to load on all pages
-	wp_register_script( 'custom-script', get_stylesheet_directory_uri() . '/js/custom.min.js', array('jquery'), '1.5', true );
+	wp_register_script( 'custom-script', get_stylesheet_directory_uri() . '/js/custom.min.js', array('jquery'), '1.6', true );
 	wp_enqueue_script( 'custom-script' );	
 
 	if ( is_cart() ) { // Scripts to load on cart page
@@ -48,6 +48,7 @@ function gpc_change_field_type_checkout($fields){
 }
 
 // Override function que añade la etiqueda de envío gratis en el resumen de carrito y en el checkout
+add_action( 'woocommerce_after_shipping_rate', 'woocommerce_free_shipping_label' ); 
 function woocommerce_free_shipping_label( $method ) {
 	$has_cost  = 0 < $method->cost;
 	$hide_cost = $has_cost && in_array( $method->get_method_id(), array( 'free_shipping', 'local_pickup' ), false );
@@ -88,6 +89,7 @@ add_action( 'wp_print_styles', function() {
 }, 100);
 
 
+// Elimina los iconos que carga el plugin WP Menu Cart
 add_action( 'wp_enqueue_scripts', 'gpc_remove_fontawesome', 20 );
 function gpc_remove_fontawesome() {
 	wp_dequeue_style( 'wpmenucart-icon' );
@@ -113,6 +115,7 @@ function woocommerce_checkout_coupon_form() {
 }
 
 
+// Genera un icono de carrito en SVG con el tamaño y color indicado
 function gpc_svg_cart_icon($width = 25, $height = 25, $color = '#fff') {
 	return '<svg xmlns="http://www.w3.org/2000/svg" width="' . $width . '" height="' . $height . '" fill="' . $color . '" viewBox="0 0 512 512"><path d="m164.960938 300.003906h.023437c.019531 0 .039063-.003906.058594-.003906h271.957031c6.695312 0 12.582031-4.441406 14.421875-10.878906l60-210c1.292969-4.527344.386719-9.394532-2.445313-13.152344-2.835937-3.757812-7.269531-5.96875-11.976562-5.96875h-366.632812l-10.722657-48.253906c-1.527343-6.863282-7.613281-11.746094-14.644531-11.746094h-90c-8.285156 0-15 6.714844-15 15s6.714844 15 15 15h77.96875c1.898438 8.550781 51.3125 230.917969 54.15625 243.710938-15.941406 6.929687-27.125 22.824218-27.125 41.289062 0 24.8125 20.1875 45 45 45h272c8.285156 0 15-6.714844 15-15s-6.714844-15-15-15h-272c-8.269531 0-15-6.730469-15-15 0-8.257812 6.707031-14.976562 14.960938-14.996094zm312.152343-210.003906-51.429687 180h-248.652344l-40-180zm0 0"></path><path d="m150 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path><path d="m362 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0"></path></svg>';
 }
@@ -163,6 +166,38 @@ function gpc_modify_menu_icon($output, $icon) {
 	return $output;
 }
 
+
+add_action( 'woocommerce_after_quantity_input_field', 'gpc_wc_add_vertical_qty_button' );
+function gpc_wc_add_vertical_qty_button() {
+	?>
+
+	<span class="vertical-buttons">
+		<span class="plus quantity-btn">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 247.35L153 130.05l117.3 117.3 35.7-35.7-153-153-153 153z"></path></svg>
+		</span>
+		<span class="minus quantity-btn">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 58.65L153 175.95l117.3-117.3 35.7 35.7-153 153-153-153z"></path></svg>
+		</span>
+	</span>
+
+	<?php
+}
+
+// Oculta los campos de dirección de envío adicional hasta que el usuario pulse en el botón "Enviar a una dirección diferente"
+// apply_filters( 'woocommerce_ship_to_different_address_checked', 'shipping' === get_option( 'woocommerce_ship_to_destination' ) ? 1 : 0 )
+add_filter( 'woocommerce_ship_to_different_address_checked', 'gpc_wc_hide_shipping_address');
+function gpc_wc_hide_shipping_address() {
+	return 0;
+}
+
+// apply_filters( 'woocommerce_product_single_add_to_cart_text', __( 'Add to cart', 'woocommerce' ), $this );
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'gpc_wc_add_to_cart_icon' );
+function gpc_wc_add_to_cart_icon( $text ) {
+	echo gpc_svg_cart_icon() . $text;
+}
+
+
+/*********** AMP ***********/
 
 // Devuelve un booleano indicando si la página actual es AMP
 function is_amp() {
@@ -277,6 +312,8 @@ function is_amp() {
 
 		add_filter( 'woocommerce_add_to_cart_redirect', 'gpc_redirect_checkout_add_to_cart' );
 		function gpc_redirect_checkout_add_to_cart( $url ) { // TODO: Comprobar si queda stock
+			// global $product;
+			// if( $product->is_in_stock() ) { }
 			$url = get_permalink( get_option( 'woocommerce_cart_page_id' ) );
 			return $url;
 		}
@@ -288,7 +325,7 @@ function is_amp() {
 			
 			$variations_are_in_stock = []; // Array to store the variations availability
 			
-			foreach ( $product->get_available_variations() as $variation ) { // Loop through all available variations
+			foreach( $product->get_available_variations() as $variation ) { // Loop through all available variations
 				
 				$variation_attributes = implode ($variation['attributes'] ); // Get all attributes for variations
 
@@ -307,6 +344,24 @@ function is_amp() {
 			return $html;
 		}
 
+		// TODO: No funciona con 2 variaciones, hay que concatenarlas
+		add_action( 'woocommerce_after_add_to_cart_quantity', 'gpc_wc_amp_add_product_availability' );
+		function gpc_wc_amp_add_product_availability() {
+			global $product;
+			if ( $product->is_type( 'variable' ) ) :
+			?>
+			
+			<amp-state id="variations_availability">
+				<script type="application/json"><?php echo gpc_get_variations_availability_json(); ?></script>
+			</amp-state>	
+		
+			<p class="stock out-of-stock" hidden [hidden]="variations_availability[currentVariation]">Agotado</p>
+			
+			<?php endif;
+		}
+
+		
+
 		// Quita el atributo 'action' en las paginas traducidas AMP para solucionar el error: "The attribute 'action' may not appear in tag 'FORM [method=POST]'".
 		// apply_filters( 'trp_translated_html', $final_html, $TRP_LANGUAGE, $language_code, $preview_mode );
 		add_filter( 'trp_translated_html', 'gpc_amp_remove_action_attribute' );
@@ -316,11 +371,8 @@ function is_amp() {
 		}
 
 
-		// NEXT AMP FUNCTION
-
-
 	} // END is_amp()
 
-// } // END AMP changes
+	
 
 ?>
