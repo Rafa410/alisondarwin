@@ -7,7 +7,7 @@
         $( ".minus" ).on( 'click', function() {
             var $input = $( this ).parent().parent().find( 'input.qty' ),
                 minVal = $input.prop( 'min' ),
-                currVal = parseInt( $input.val() );
+                currVal = parseInt( $input.val() ) || 0;
 
             if (timeout) {
                 clearTimeout(timeout);
@@ -34,8 +34,8 @@
 
         $( ".plus" ).on( 'click', function() {
             var $input = $( this ).parent().parent().find( 'input.qty' ),
-                currVal = parseInt( $input.val() ),
-                max = parseInt( $input.prop( 'max' ) );
+                currVal = parseInt( $input.val() ) || 0,
+                max = parseInt( $input.prop( 'max' ) ) || 99;
 
             if (timeout) {
                 clearTimeout(timeout);

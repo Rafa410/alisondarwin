@@ -597,9 +597,9 @@ Template: generatepress
 
 
 /* Style only for EP "Meaningless Sounds */
-#product-265 .woocommerce-product-gallery__image { 
+/* #product-265 .woocommerce-product-gallery__image { 
     border-radius: 0 240px 230px 0;
-}
+} */
 
 
 
