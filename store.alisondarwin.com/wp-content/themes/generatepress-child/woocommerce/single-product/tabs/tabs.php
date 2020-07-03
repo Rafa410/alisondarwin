@@ -32,16 +32,10 @@ if ( ! empty( $product_tabs ) ) : ?>
 
 	<div class="woocommerce-tabs wc-tabs-wrapper">
 		
-		<?php if ( is_amp() ) : ?>
-			<amp-state id="wc_tab_expanded">
-				<script type="application/json">0</script>
-			</amp-state>
-		<?php endif; ?>
-		
 		<ul class="tabs wc-tabs" role="tablist">
 			<?php $tab_index = 1; ?>
 			<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-				<li class="<?php echo esc_attr( $key ); ?>_tab" id="tab-title-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>" tabindex="<?php echo $tab_index++; ?>"
+			<li class="<?php echo esc_attr( $key ); ?>_tab <?php if( $key == 'description' ) echo 'active'; ?>" id="tab-title-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>" tabindex="<?php echo $tab_index++; ?>"
 				<?php if ( is_amp() ) : ?>
 						on="tap:AMP.setState( { wc_tab_expanded: '<?php echo esc_attr( $key ); ?>' } )"	
 						[class]=" (wc_tab_expanded == '<?php echo esc_attr( $key ); ?>') ? '<?php echo esc_attr( $key ); ?>_tab active' : '<?php echo esc_attr( $key ); ?>_tab' "
@@ -54,9 +48,10 @@ if ( ! empty( $product_tabs ) ) : ?>
 			<?php endforeach; ?>
 		</ul>
 		<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-			<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab" id="tab-<?php echo esc_attr( $key ); ?>" role="tabpanel" aria-labelledby="tab-title-<?php echo esc_attr( $key ); ?>"
+			<?php $default_classes = 'woocommerce-Tabs-panel woocommerce-Tabs-panel--' . esc_attr( $key ) . 'panel entry-content wc-tab' ?>
+			<div class="<?php echo ( $key == 'description' ) ? $default_classes . ' active' : $default_classes; ?>" id="tab-<?php echo esc_attr( $key ); ?>" role="tabpanel" aria-labelledby="tab-title-<?php echo esc_attr( $key ); ?>"
 			<?php if ( is_amp() ) : ?>
-					[class]=" (wc_tab_expanded == '<?php echo esc_attr( $key ); ?>') ? 'woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab active' : 'woocommerce-Tabs-panel woocommerce-Tabs-panel--<?php echo esc_attr( $key ); ?> panel entry-content wc-tab' "
+					[class]=" (wc_tab_expanded == '<?php echo esc_attr( $key ); ?>') ? '<?php echo $default_classes . ' active'; ?>' : '<?php echo $default_classes ?>'"
 				<?php endif; ?>	 
 			>
 				<?php

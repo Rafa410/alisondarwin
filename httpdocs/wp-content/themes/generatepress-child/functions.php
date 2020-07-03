@@ -34,7 +34,7 @@ function custom_scripts() {
 	wp_register_script( 'custom-js', get_stylesheet_directory_uri(). '/js/custom.min.js', array( 'jquery' ), '1.1', true );
 	wp_enqueue_script( 'custom-js' );
 
-	wp_register_script( 'custom-preloader', get_stylesheet_directory_uri() . '/js/preloader.min.js', array( 'jquery' ), '1.2' );
+	wp_register_script( 'custom-preloader', get_stylesheet_directory_uri() . '/js/preloader.min.js', array( 'jquery' ), '1.3' );
 	wp_enqueue_script( 'custom-preloader' );
 
 	// Pagina de inicio

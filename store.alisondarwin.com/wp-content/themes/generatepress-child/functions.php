@@ -142,7 +142,7 @@ add_filter( 'wpmenucart_menu_item_wrapper', $gpc_change_position_cart );
 
 // Añade el logo al menu del header
 $gpc_generate_menu_logo = function() use ( &$gpc_wpmenucart_menu_item_li ) {
-	$html = '<div class="logo-menu"><a href="https://store.alisondarwin.com"><h1>alison DARWIN</h1></a></div>';
+	$html = '<div class="logo-menu"><a href="' . ( is_shop() ? 'https://www.alisondarwin.com' : 'https://store.alisondarwin.com' ) . '"><h1>alison DARWIN</h1></a></div>';
 	$html .= $gpc_wpmenucart_menu_item_li;
 	echo $html;
 };
@@ -170,12 +170,26 @@ function gpc_modify_menu_icon($output, $icon) {
 add_action( 'woocommerce_after_quantity_input_field', 'gpc_wc_add_vertical_qty_button' );
 function gpc_wc_add_vertical_qty_button() {
 	?>
+	
+	<?php if( is_amp() ) : ?>
+		<amp-state id="product_qty">
+			<script type="application/json">1</script>
+		</amp-state>
+	<?php endif; ?>
 
 	<span class="vertical-buttons">
-		<span class="plus quantity-btn">
+		<span class="plus quantity-btn" 
+			<?php if( is_amp() ) : ?>
+				on="tap:AMP.setState( { product_qty: ( product_qty >= max_value ) ? product_qty : +product_qty + 1 } )"
+			<?php endif; ?>
+		>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 247.35L153 130.05l117.3 117.3 35.7-35.7-153-153-153 153z"></path></svg>
 		</span>
-		<span class="minus quantity-btn">
+		<span class="minus quantity-btn"
+			<?php if( is_amp() ) : ?>
+				on="tap:AMP.setState( { product_qty: ( product_qty <= min_value ) ? product_qty : product_qty - 1 } )"
+			<?php endif; ?>
+		>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 58.65L153 175.95l117.3-117.3 35.7 35.7-153 153-153-153z"></path></svg>
 		</span>
 	</span>
@@ -195,6 +209,15 @@ add_filter( 'woocommerce_product_single_add_to_cart_text', 'gpc_wc_add_to_cart_i
 function gpc_wc_add_to_cart_icon( $text ) {
 	echo gpc_svg_cart_icon() . $text;
 }
+
+// Quita el boton añadir al carrito en la página principal de la tienda
+remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+
+add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_link_close', 15 );
+
+add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_link_open', 20 );
+
+
 
 
 /*********** AMP ***********/
@@ -216,21 +239,23 @@ function is_amp() {
 			echo apply_filters( 'generate_meta_viewport', '<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">' ); // WPCS: XSS ok.	
 		}	
 
+		// Añade la clase 'fixed' al header ya que no se puede hacer con JS en AMP 
+		// apply_filters( "generate_{$context}_class", $classes, $class );
+		add_filter( 'generate_navigation_class', 'gpc_amp_add_toggled_class', 15 );
+		function gpc_amp_add_toggled_class( $classes ) {
+			$classes[] = 'fixed';
+			return $classes;
+		}
+
 		/***** Override a la función que genera el menú en el móvil para que sea compatible con AMP *****/
 		function generate_navigation_position() {
 			?>
 
 			<nav id="site-navigation" <?php generate_do_element_classes( 'navigation' ); ?> <?php generate_do_microdata( 'navigation' ); ?>
 			<?php if ( is_amp() ) : ?>
-					[class]=" siteNavigationMenuExpanded ? 'main-navigation toggled' : 'main-navigation' "
+					[class]=" siteNavigationMenuExpanded ? 'main-navigation fixed toggled' : 'main-navigation fixed' "
 				<?php endif; ?>
 			>
-
-				<?php if ( is_amp() ) : ?>
-					<amp-state id="siteNavigationMenuExpanded">
-						<script type="application/json">false</script>
-					</amp-state>
-				<?php endif; ?>
 
 				<div <?php generate_do_element_classes( 'inside_navigation' ); ?>>
 					<?php
@@ -247,7 +272,7 @@ function is_amp() {
 					<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"
 					
 					<?php if ( is_amp() ) : ?>
-						on="tap:AMP.setState( { siteNavigationMenuExpanded: ! siteNavigationMenuExpanded } )"
+						on="tap:AMP.setState( { siteNavigationMenuExpanded: !siteNavigationMenuExpanded } )"
 						[aria-expanded]="siteNavigationMenuExpanded ? 'true' : 'false'"
 					<?php endif; ?>
 					
@@ -323,28 +348,52 @@ function is_amp() {
 			
 			global $product; // Woocommerce global variable
 			
-			$variations_are_in_stock = []; // Array to store the variations availability
-			
-			foreach( $product->get_available_variations() as $variation ) { // Loop through all available variations
-				
-				$variation_attributes = implode ($variation['attributes'] ); // Get all attributes for variations
+			$variations_availability = []; // Array of bools to store variations availability (In stock or out of stock)
+			$count_attributes;
 
-				$variations_are_in_stock[$variation_attributes] = $variation['is_in_stock']; // Array of bools specifying if a variations has stock or not.
-				
+			foreach( $product->get_available_variations() as $variation ) { // Loop through all available variations
+				$variation_attributes = $variation['attributes'];
+				$count_attributes = count( $variation_attributes ); // Count number of attributes of current variation
+
+				if ( $count_attributes == 1 ) {
+					$variation_attributes = implode( $variation_attributes );
+					$variations_availability[$variation_attributes] = $variation['is_in_stock'];
+				}
+				elseif ( $count_attributes == 2) {
+					$variation_attributes = array_values( $variation_attributes );
+					$variations_availability[$variation_attributes[0]][$variation_attributes[1]] = $variation['is_in_stock'];
+				}
 			}
 
-			return json_encode( $variations_are_in_stock ); // Returns an array with variations availabililty encoded in JSON format 
+			$variations_availability['count'] = $count_attributes;
 
+			return json_encode( $variations_availability ); // Returns an array with variations availabililty encoded in JSON format 
 		}
 
 		// Añade a la etiqueta <select> el atributo AMP "on" para asignar el valor seleccionado a la variable currentVariation
-		add_filter( 'woocommerce_dropdown_variation_attribute_options_html', 'gpc_add_amp_attributes_select' );
-		function gpc_add_amp_attributes_select( $html ) {
-			$html = str_replace( '<select', '<select on="change:AMP.setState({currentVariation: event.value})"', $html);
+		add_filter( 'woocommerce_dropdown_variation_attribute_options_html', 'gpc_add_amp_attributes_select', 15, 2 );
+		function gpc_add_amp_attributes_select( $html, $args ) {
+			$id = $args['id'] ? $args['id'] : sanitize_title( $args['attribute'] );
+
+			if ( $id == 'pa_talla' ) {
+				$html = str_replace(
+					'id="pa_talla"', 
+					'id="pa_talla" on="change:AMP.setState( { currentSize: event.value } )"', 
+					$html
+				);
+			}
+			elseif ( $id == 'pa_color' ) {
+				$html = str_replace( 
+					'id="pa_color"', 
+					'id="pa_color" on="change:AMP.setState( { currentColor: event.value } )"', 
+					$html
+				);
+			}
+
 			return $html;
 		}
 
-		// TODO: No funciona con 2 variaciones, hay que concatenarlas
+		// Añade la información de disponibilidad para cada variación del producto en formato JSON
 		add_action( 'woocommerce_after_add_to_cart_quantity', 'gpc_wc_amp_add_product_availability' );
 		function gpc_wc_amp_add_product_availability() {
 			global $product;
@@ -352,15 +401,38 @@ function is_amp() {
 			?>
 			
 			<amp-state id="variations_availability">
-				<script type="application/json"><?php echo gpc_get_variations_availability_json(); ?></script>
+				<script type="application/json">
+					<?php echo gpc_get_variations_availability_json(); ?>
+				</script>
 			</amp-state>	
-		
-			<p class="stock out-of-stock" hidden [hidden]="variations_availability[currentVariation]">Agotado</p>
 			
 			<?php endif;
 		}
 
-		
+		// Muestra un mensaje cuando el producto está sin stock
+		add_action( 'woocommerce_before_single_variation', 'gpc_amp_out_of_stock_msg' );
+		function gpc_amp_out_of_stock_msg() {
+			?>
+
+			<p class="stock out-of-stock" hidden 
+				[hidden]="( variations_availability['count'] < 2 ) ? variations_availability[currentSize] : variations_availability[currentSize][currentColor]">
+					Agotado
+			</p>
+
+			<?php
+		}
+
+		add_action( 'woocommerce_product_after_tabs', 'gpc_amp_default_state_tabs');
+		function gpc_amp_default_state_tabs() {
+			?>
+
+			<amp-state id="wc_tab_expanded">
+				<script type="application/json">"description"</script>
+			</amp-state>
+
+			<?php
+		}
+
 
 		// Quita el atributo 'action' en las paginas traducidas AMP para solucionar el error: "The attribute 'action' may not appear in tag 'FORM [method=POST]'".
 		// apply_filters( 'trp_translated_html', $final_html, $TRP_LANGUAGE, $language_code, $preview_mode );

@@ -39,10 +39,24 @@ if ( $max_value && $min_value === $max_value ) {
 			max="<?php echo esc_attr( 0 < $max_value ? $max_value : '' ); ?>"
 			name="<?php echo esc_attr( $input_name ); ?>"
 			value="<?php echo esc_attr( $input_value ); ?>"
+			<?php if( is_amp() ) : ?>
+				[value]="product_qty"
+				on="change:AMP.setState( { product_qty : ( event.value < max_value) ? event.value : 99 } )"
+			<?php endif; ?>
 			title="<?php echo esc_attr_x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
 			size="4"
 			placeholder="<?php echo esc_attr( $placeholder ); ?>"
 			inputmode="<?php echo esc_attr( $inputmode ); ?>" />
+
+			<?php if ( is_amp() ) : ?>
+				<amp-state id="min_value">
+					<script type="application/json"><?php echo ( $min_value ) ? esc_attr( $min_value ) : 1; ?></script>
+				</amp-state>
+				<amp-state id="max_value">
+					<script type="application/json"><?php echo ( $max_value ) ? esc_attr( $max_value ) : 99 ; ?></script>
+				</amp-state>
+			<?php endif; ?>
+
 		<?php do_action( 'woocommerce_after_quantity_input_field' ); ?>
 	</div>
 	<?php
