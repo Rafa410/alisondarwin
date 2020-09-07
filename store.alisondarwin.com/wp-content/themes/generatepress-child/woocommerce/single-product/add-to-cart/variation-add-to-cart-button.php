@@ -28,8 +28,11 @@ global $product;
 	do_action( 'woocommerce_after_add_to_cart_quantity' );
 	?>
 
-	<button type="submit" class="single_add_to_cart_button button alt" disabled
-		[disabled]="( variations_availability['count'] < 2 ) ? ( !variations_availability[currentSize] ) : ( !variations_availability[currentSize][currentColor] )"
+	<button type="submit" class="single_add_to_cart_button button alt" 
+		<?php if ( is_amp() ) : ?> 
+			disabled
+			[disabled]="( variations_availability['count'] < 2 ) ? ( !variations_availability[currentSize] ) : ( !variations_availability[currentSize][currentColor] )"
+		<?php endif; ?>
 	>
 		<?php echo esc_html( $product->single_add_to_cart_text() ); ?>
 	</button>
