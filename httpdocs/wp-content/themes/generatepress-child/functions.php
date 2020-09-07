@@ -108,27 +108,16 @@ function gpc_modify_menu_icon($output, $icon) {
 
 
 
-// Genera un footer personalizado
-add_action( 'generate_footer', 'generate_custom_footer' );
-function generate_custom_footer() {
-	
-	?>
-		<footer class="site-info" <?php generate_do_microdata( 'footer' ); ?>>
-			<div class="inside-site-info <?php if ( 'full-width' !== generate_get_option( 'footer_inner_width' ) ) : ?>grid-container grid-parent<?php endif; ?>">
-				<?php
-				/**
-				 * generate_before_copyright hook.
-				 * @hooked generate_footer_bar - 15
-				 */
-				do_action( 'generate_before_copyright' );
-				?>
-				<div class="copyright-bar">
-					<span class="copyright">© <?php echo date('Y'); ?> <a href="https://www.alisondarwin.com">alison DARWIN</a></span>
-				</div>
-			</div>
-		</footer><!-- .site-info -->
-		<?php
-	
+// Sobreescribe el footer para quitar "Funciona con GeneratePress"
+// apply_filters( 'generate_copyright', $copyright );
+add_filter( 'generate_copyright', 'gpc_generate_custom_copyright' );
+function gpc_generate_custom_copyright( $copyright ) {
+	$copyright = sprintf( '<span class="copyright">&copy; %1$s <a href="%3$s">%2$s</a></span>',
+		date( 'Y' ),
+		get_bloginfo( 'name' ),
+		get_home_url()
+	);
+	return $copyright;
 }
 
 // Añade nuevo widget 'contenido'

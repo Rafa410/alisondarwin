@@ -492,7 +492,9 @@ div.wpcf7, #mc_embed_signup {
 
 /* End toggle animation */
 
-
+.generate-back-to-top {
+    border-radius: 50%;
+}
 
 .logo-list svg {
     vertical-align: middle;
