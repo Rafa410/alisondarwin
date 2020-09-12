@@ -1,10 +1,56 @@
 (function($) {
 
+    /* Detect current menu section when the user scrolls down */
+    function detectCurrentSection() {
+        let prevID;
+        const topMenu = $( '#site-navigation' );
+        const topMenuHeight = topMenu.outerHeight();
+        let menuItems = topMenu.find("ul a");
 
-    /** TOUCHABLE LINKS
-    * Deshabilita el link al pulsar en una noticia por primera vez desde móvil o tablet para mostrar
-    * la descripcion y despues vuelve a habilitar el link.
-    */
+        let scrollItems = menuItems.map(function() {
+            let link = $(this).attr('href');
+            let item = $( link.substring(link.indexOf('#')) );
+            if (item.length) { 
+                return item; 
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            // Get the current scroll position
+            let currPos = $(this).scrollTop() + topMenuHeight;
+            
+            // Get id of current section
+            let currSection = scrollItems.map(function(){
+                if ($(this).offset().top < currPos) {
+                    return this;
+                }
+            });
+
+            // Get the id of the current element
+            currSection = currSection[currSection.length - 1];
+            let id = currSection && currSection.length ? currSection[0].id : '';
+
+            if (id) {
+                if (prevID !== id) {
+                    prevID = id;
+                    menuItems
+                        .parent().removeClass('sfHover')
+                        .end().filter("[href*='#"+id+"']").parent().addClass('sfHover');
+                }
+            }
+            else {
+                if (prevID) {
+                    prevID = null;
+                    menuItems.parent().removeClass('sfHover');
+                }
+            }
+        })
+    }
+
+    /*
+     * Deshabilita el link al pulsar en una noticia por primera vez desde móvil o tablet para mostrar
+     * la descripcion y despues vuelve a habilitar el link.
+     */
     function touchableLinks() {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -25,9 +71,7 @@
     }
 
 
-    /* DYNAMIC PLACEHOLDER
-    * Script para poner un placeholder que se mueve en el formulario de contacto y de suscripcion
-    */
+    /* Añade un placeholder que se mueve en el formulario de contacto y de suscripcion */
     function dynamicPlaceholder() {
         let i = 0;
 
@@ -91,10 +135,7 @@
     }
 
 
-    /**
-     * Carga el script mc-validate.js de MailChimp
-     * cuando el usuario hace focus en el campo de email
-     */
+    /* Carga el script mc-validate.js de MailChimp cuando el usuario hace focus en el campo de email */
     function loadMcValidate() {
         const $form = $( '#mc_embed_signup' );
         if ( $form.length ) {
@@ -110,23 +151,11 @@
     }
 
 
-    /** Ya no es necesario, ahora se pueden traducir los links con translatepress
-     * DYNAMIC CONTACT LINKS
-     * Cambia el enlace que hay en la información de contacto según el idioma seleccionado
-     */
-    /* function dynamiContactLinks() {
-        const email = document.querySelectorAll('#contact-info .elementor-icon-list-item a')[0];
-        const phone = document.querySelectorAll('#contact-info .elementor-icon-list-item a')[1];
-
-        email.href = 'mailto:' + email.innerText.slice(2, -2); // Elimina los 2 primeros ( '· ' ) y últimos ( ' ·' ) caracteres
-        phone.href = 'https://wa.me/' + phone.innerText.replace(/\s+/g, '').slice(2, -1); // Primero quita los espacios y después los 2 primeros caracteres ( '·+' ) y el último caracter (·)
-    }*/
-
-
     /************** DOCUMENT READY **************/
     
 
     $(document).ready(function ($) {
+        detectCurrentSection()
         touchableLinks();
         dynamicPlaceholder();
         loadMcValidate();
