@@ -561,12 +561,32 @@ div.wpcf7, #mc_embed_signup {
     padding: 0.25em;
 }
 
-.site-info .copyright a:hover {
+.site-info .copyright a:hover,
+.site-info .footer-bar a:hover {
     color: #ff6a01;
 }
 
 .site-info .copyright-bar .copyright {
     color: #ffffff;
+}
+
+.site-footer .copyright-bar,
+.site-footer .footer-bar {
+    float: none;
+}
+.site-footer .copyright-bar {
+    margin-top: 1.5em;
+}
+.site-footer .footer-bar {
+    text-align: center;
+}
+
+li.menu-item::after {
+    content: "·";
+    margin-left: 1.5em;
+}
+li.menu-item:last-child::after {
+    display: none;
 }
 
 #cookie-law-info-bar {

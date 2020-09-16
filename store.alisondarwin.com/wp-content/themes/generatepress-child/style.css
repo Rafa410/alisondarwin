@@ -589,8 +589,9 @@ Template: generatepress
     display: flex;
     flex-wrap: wrap;
 }
-#wc-stripe-payment-request-wrapper {
 
+.related.products {
+    margin-top: 2em;
 }
 
 
@@ -843,7 +844,9 @@ input[type="submit"]:hover,
 }
 
 
-
+.generate-back-to-top {
+    border-radius: 50%;
+}
 
 /* Footer */
 
@@ -851,12 +854,32 @@ input[type="submit"]:hover,
     padding: 1em;
 }
 
-.site-info .copyright a:hover {
+.site-info .copyright a:hover, 
+.site-info .footer-bar a:hover {
     color: #ff6a01;
 }
 
 .site-info .copyright-bar .copyright {
     color: #fff;
+}
+
+.site-footer .copyright-bar,
+.site-footer .footer-bar {
+    float: none;
+}
+.site-footer .copyright-bar {
+    margin-top: 1.5em;
+}
+.site-footer .footer-bar {
+    text-align: center;
+}
+
+#menu-menu-footer li.menu-item::after {
+    content: "·";
+    margin-left: 1.5em;
+}
+#menu-menu-footer li.menu-item:last-child::after {
+    display: none;
 }
 
 #cookie-law-info-bar {
