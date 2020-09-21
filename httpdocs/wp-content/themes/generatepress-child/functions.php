@@ -5,9 +5,6 @@ add_action( 'wp_enqueue_scripts', 'override_scripts', 100 );
 function override_scripts() {
 	$isMobile = preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 	
-	// if (is_front_page()) { // Cannot read property 'setDefaults' of undefined on /tour
-	// 	wp_dequeue_script( 'jquery-ui-datepicker' ); // MEC datepicker.js
-	// }
 	wp_dequeue_script( 'jquery-ui-datepicker' ); // MEC datepicker.js
 	
 	wp_dequeue_script( 'google-recaptcha' );
@@ -18,8 +15,8 @@ function override_scripts() {
 	wp_dequeue_script( 'swiper' ); // Elementor swiper.js
 
 	if ( !is_admin() ) {
-		wp_dequeue_script( 'mec-select2-script' ); // MEC select2.js
-		wp_dequeue_style( 'mec-select2-style' ); // MEC select2.css
+		// wp_dequeue_script( 'mec-select2-script' ); // MEC select2.js
+		// wp_dequeue_style( 'mec-select2-style' ); // MEC select2.css
 		wp_dequeue_script( 'wp-color-picker' ); // MEC color-picker.js
 		wp_dequeue_style( 'wp-color-picker' ); // MEC color-picker.css
 	}
