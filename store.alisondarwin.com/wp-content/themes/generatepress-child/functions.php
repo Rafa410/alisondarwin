@@ -231,19 +231,24 @@ function is_amp() {
 // add_action( 'wp', 'gcp_amp_changes' );
 // function gcp_amp_changes() {
 
-	if (is_amp()) {
+	// if (is_amp()) { // TODO: No funciona porque se llama a la funcion demasiado pronto
 
 		/** Override del viewport en páginas AMP, para añadir 'minimum-scale=1' **/
-		add_action( 'wp_head', 'generate_add_viewport' );
-		function generate_add_viewport() {
-			echo apply_filters( 'generate_meta_viewport', '<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">' ); // WPCS: XSS ok.	
+		add_filter( 'generate_meta_viewport',  'gpc_amp_generate_meta_viewport' );
+		function gpc_amp_generate_meta_viewport( $meta_viewport ) {
+			if (is_amp()) {
+				$meta_viewport = '<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">';
+			}
+			return $meta_viewport;
 		}	
 
 		// Añade la clase 'fixed' al header ya que no se puede hacer con JS en AMP 
 		// apply_filters( "generate_{$context}_class", $classes, $class );
 		add_filter( 'generate_navigation_class', 'gpc_amp_add_toggled_class', 15 );
 		function gpc_amp_add_toggled_class( $classes ) {
-			$classes[] = 'fixed';
+			if (is_amp()) {
+				$classes[] = 'fixed';
+			}
 			return $classes;
 		}
 
@@ -331,16 +336,20 @@ function is_amp() {
 		// Elimina el plugin cookie-law-info de las páginas AMP
 		add_filter( 'cli_show_cookie_bar_only_on_selected_pages', 'gpc_filter_cookie_law_info_amp');
 		function gpc_filter_cookie_law_info_amp($notify_html) {
-			$notify_html = '';
+			if (is_amp()) {
+				$notify_html = '';
+			}
 			return $notify_html;
 		}
 
-		add_filter( 'woocommerce_add_to_cart_redirect', 'gpc_redirect_checkout_add_to_cart' );
+		add_filter( 'woocommerce_add_to_cart_redirect', 'gpc_redirect_checkout_add_to_cart' ); // TODO: No se ejecuta en páginas AMP
 		function gpc_redirect_checkout_add_to_cart( $url ) { // TODO: Comprobar si queda stock
 			// global $product;
 			// if( $product->is_in_stock() ) { }
-			$url = get_permalink( get_option( 'woocommerce_cart_page_id' ) );
-			return $url;
+			if (is_amp()) {
+				$url = get_permalink( get_option( 'woocommerce_cart_page_id' ) );
+				return $url;
+			}
 		}
 
 		// Devuelve la información de disponibilidad (si está en stock) para cada variación del producto en formato JSON
@@ -373,23 +382,24 @@ function is_amp() {
 		// Añade a la etiqueta <select> el atributo AMP "on" para asignar el valor seleccionado a la variable currentVariation
 		add_filter( 'woocommerce_dropdown_variation_attribute_options_html', 'gpc_add_amp_attributes_select', 15, 2 );
 		function gpc_add_amp_attributes_select( $html, $args ) {
-			$id = $args['id'] ? $args['id'] : sanitize_title( $args['attribute'] );
+			if (is_amp()) {
+				$id = $args['id'] ? $args['id'] : sanitize_title( $args['attribute'] );
 
-			if ( $id == 'pa_talla' ) {
-				$html = str_replace(
-					'id="pa_talla"', 
-					'id="pa_talla" on="change:AMP.setState( { currentSize: event.value } )"', 
-					$html
-				);
+				if ( $id == 'pa_talla' ) {
+					$html = str_replace(
+						'id="pa_talla"', 
+						'id="pa_talla" on="change:AMP.setState( { currentSize: event.value } )"', 
+						$html
+					);
+				}
+				elseif ( $id == 'pa_color' ) {
+					$html = str_replace( 
+						'id="pa_color"', 
+						'id="pa_color" on="change:AMP.setState( { currentColor: event.value } )"', 
+						$html
+					);
+				}
 			}
-			elseif ( $id == 'pa_color' ) {
-				$html = str_replace( 
-					'id="pa_color"', 
-					'id="pa_color" on="change:AMP.setState( { currentColor: event.value } )"', 
-					$html
-				);
-			}
-
 			return $html;
 		}
 
@@ -397,7 +407,7 @@ function is_amp() {
 		add_action( 'woocommerce_after_add_to_cart_quantity', 'gpc_wc_amp_add_product_availability' );
 		function gpc_wc_amp_add_product_availability() {
 			global $product;
-			if ( $product->is_type( 'variable' ) ) :
+			if ( is_amp() && $product->is_type( 'variable' ) ) :
 			?>
 			
 			<amp-state id="variations_availability">
@@ -412,6 +422,7 @@ function is_amp() {
 		// Muestra un mensaje cuando el producto está sin stock
 		add_action( 'woocommerce_before_single_variation', 'gpc_amp_out_of_stock_msg' );
 		function gpc_amp_out_of_stock_msg() {
+			if ( is_amp() ) :
 			?>
 
 			<p class="stock out-of-stock" hidden 
@@ -419,18 +430,20 @@ function is_amp() {
 					Agotado
 			</p>
 
-			<?php
+			<?php endif;
 		}
 
+		// Muestra por defecto la pestaña de 'Descripción'
 		add_action( 'woocommerce_product_after_tabs', 'gpc_amp_default_state_tabs');
 		function gpc_amp_default_state_tabs() {
+			if ( is_amp() ) :
 			?>
 
 			<amp-state id="wc_tab_expanded">
 				<script type="application/json">"description"</script>
 			</amp-state>
 
-			<?php
+			<?php endif;
 		}
 
 
@@ -438,12 +451,14 @@ function is_amp() {
 		// apply_filters( 'trp_translated_html', $final_html, $TRP_LANGUAGE, $language_code, $preview_mode );
 		add_filter( 'trp_translated_html', 'gpc_amp_remove_action_attribute' );
 		function gpc_amp_remove_action_attribute( $final_html ) {
-			$final_html = str_replace( 'action=""', '', $final_html );
+			if ( is_amp() ) {
+				$final_html = str_replace( 'action=""', '', $final_html );
+			}
 			return $final_html;
 		}
 
 
-	} // END is_amp()
+	// } // END is_amp()
 
 	
 
