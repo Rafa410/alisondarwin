@@ -581,11 +581,11 @@ div.wpcf7, #mc_embed_signup {
     text-align: center;
 }
 
-li.menu-item::after {
+#menu-menu-footer li.menu-item::after {
     content: "·";
     margin-left: 1.5em;
 }
-li.menu-item:last-child::after {
+#menu-menu-footer li.menu-item:last-child::after {
     display: none;
 }
 
