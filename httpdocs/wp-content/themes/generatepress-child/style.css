@@ -558,7 +558,7 @@ div.wpcf7, #mc_embed_signup {
 }   
 
 .site-footer .site-info {
-    padding: 0.25em;
+    padding: 1em;
 }
 
 .site-info .copyright a:hover,
@@ -568,6 +568,7 @@ div.wpcf7, #mc_embed_signup {
 
 .site-info .copyright-bar .copyright {
     color: #ffffff;
+    letter-spacing: 1px;
 }
 
 .site-footer .copyright-bar,
@@ -581,13 +582,17 @@ div.wpcf7, #mc_embed_signup {
     text-align: center;
 }
 
-#menu-menu-footer li.menu-item::after {
-    content: "·";
-    margin-left: 1.5em;
+#menu-menu-footer li.menu-item {
+    font-size: 14px;
+    font-weight: 300;
 }
-#menu-menu-footer li.menu-item:last-child::after {
-    display: none;
-}
+    #menu-menu-footer li.menu-item::after {
+        content: "·";
+        margin-left: 1.5em;
+    }
+        #menu-menu-footer li.menu-item:last-child::after {
+            display: none;
+        }
 
 #cookie-law-info-bar {
     padding: 0.25em 0.25em 0.5em;

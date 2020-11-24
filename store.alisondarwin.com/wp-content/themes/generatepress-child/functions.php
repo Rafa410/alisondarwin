@@ -183,14 +183,14 @@ function gpc_wc_add_vertical_qty_button() {
 				on="tap:AMP.setState( { product_qty: ( product_qty >= max_value ) ? product_qty : +product_qty + 1 } )"
 			<?php endif; ?>
 		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 247.35L153 130.05l117.3 117.3 35.7-35.7-153-153-153 153z"></path></svg>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano" width="8"><path d="M35.7 247.35L153 130.05l117.3 117.3 35.7-35.7-153-153-153 153z"></path></svg>
 		</span>
 		<span class="minus quantity-btn"
 			<?php if( is_amp() ) : ?>
 				on="tap:AMP.setState( { product_qty: ( product_qty <= min_value ) ? product_qty : product_qty - 1 } )"
 			<?php endif; ?>
 		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano"><path d="M35.7 58.65L153 175.95l117.3-117.3 35.7 35.7-153 153-153-153z"></path></svg>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" xmlns:v="https://vecta.io/nano" width="8"><path d="M35.7 58.65L153 175.95l117.3-117.3 35.7 35.7-153 153-153-153z"></path></svg>
 		</span>
 	</span>
 

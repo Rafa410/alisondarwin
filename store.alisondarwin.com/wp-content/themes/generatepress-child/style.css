@@ -399,8 +399,7 @@ Template: generatepress
 
 .woocommerce .quantity-btn svg {
     position: absolute; 
-    left: 7px; 
-    width: 0.5rem;  
+    left: 7px;  
     fill: #6c6c6c;
     transition: fill 0.3s;
 }
@@ -861,6 +860,7 @@ input[type="submit"]:hover,
 
 .site-info .copyright-bar .copyright {
     color: #fff;
+    letter-spacing: 1px;
 }
 
 .site-footer .copyright-bar,
@@ -874,13 +874,17 @@ input[type="submit"]:hover,
     text-align: center;
 }
 
-#menu-menu-footer li.menu-item::after {
-    content: "·";
-    margin-left: 1.5em;
+#menu-menu-footer li.menu-item {
+    font-size: 14px;
+    font-weight: 300;
 }
-#menu-menu-footer li.menu-item:last-child::after {
-    display: none;
-}
+    #menu-menu-footer li.menu-item::after {
+        content: "·";
+        margin-left: 1.5em;
+    }
+        #menu-menu-footer li.menu-item:last-child::after {
+            display: none;
+        }
 
 #cookie-law-info-bar {
     padding: 0.25em 0.25em 0.5em;
