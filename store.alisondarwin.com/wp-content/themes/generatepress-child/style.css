@@ -447,10 +447,7 @@ Template: generatepress
         float: unset;
         display: inline-block;
         vertical-align: text-top;
-        margin-right: 3%; 
-    }
-    .woocommerce ul.products li.product:last-child {
-        margin-right: 0;
+        margin-right: 2%; 
     }
 
 .woocommerce #payment #place_order, .woocommerce div.product form.cart .button, .woocommerce-cart .wc-proceed-to-checkout a.checkout-button {
