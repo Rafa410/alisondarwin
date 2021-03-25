@@ -126,6 +126,9 @@ body.woocommerce.archive {
 
 /** End header **/
 
+.generate-back-to-top .gp-icon svg {
+	transform: rotate(0);
+}
 
 
 @media only screen AND (max-width: 767px) {
