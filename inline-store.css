@@ -8,8 +8,8 @@ body.woocommerce.archive {
     background-size: cover;
 }
 
-.inside-header, .hidden {
-	display: none;
+.inside-header, .hidden, .product #wc-stripe-payment-request-wrapper, .product #wc-stripe-payment-request-button-separator {
+	display: none !important;
 }
 .offscreen {
     border: 0;

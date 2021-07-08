@@ -695,6 +695,9 @@ Template: generatepress
     }
 }
 
+.woocommerce-variation.single_variation.sold-out {
+    display: block !important;
+}
 
 /* End WC */
 
