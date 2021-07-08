@@ -33,7 +33,10 @@
             setTimeout(function() {
                 $preloader.remove();
             }, 2000);  
-        } 
+        }
+
+        $(window).on('load', () => $preloader.fadeOut()) // Just in case image load fails
+
     });
 
 }(jQuery));
